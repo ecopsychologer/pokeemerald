@@ -1052,10 +1052,6 @@ void Task_LinkFullSave(u8 taskId)
     }
 }
 
-void switchToBank1(void) {
-    *((volatile u8 *) 0x9000000) = 0x1;
-}
-
-void switchToBank0(void) {
-    *((volatile u8 *) 0x9000000) = 0x0;
+void switchToBank(u8 bankIndex) {
+    *((volatile u8 *) 0x9000000) = bankIndex;
 }
