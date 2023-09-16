@@ -1,6 +1,6 @@
 # Pokémon Emerald
 
-This is a decompilation of Pokémon Emerald.
+This is a decompilation of Pokémon Emerald that is in the process of adding compatability with cheap reproduction carts.
 
 It builds the following ROM:
 
