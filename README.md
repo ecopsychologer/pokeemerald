@@ -1,6 +1,6 @@
 # Pokémon Emerald
 
-This is a decompilation of Pokémon Emerald.
+This is a decompilation of Pokémon Emerald merged from ShinyDragonHunter's [*repo*](https://github.com/ShinyDragonHunter/pokeemerald/commits/cleanup)
 
 It builds the following ROM:
 
