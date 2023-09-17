@@ -48,12 +48,6 @@
 #include "constants/trainers.h"
 #include "constants/union_room.h"
 
-struct SpeciesItem
-{
-    u16 species;
-    u16 item;
-};
-
 static u16 CalculateBoxMonChecksum(struct BoxPokemon *boxMon);
 static union PokemonSubstruct *GetSubstruct(struct BoxPokemon *boxMon, u32 personality, u8 substructType);
 static void EncryptBoxMon(struct BoxPokemon *boxMon);
@@ -70,7 +64,7 @@ EWRAM_DATA u8 gEnemyPartyCount = 0;
 EWRAM_DATA struct Pokemon gPlayerParty[PARTY_SIZE] = {0};
 EWRAM_DATA struct Pokemon gEnemyParty[PARTY_SIZE] = {0};
 EWRAM_DATA struct SpriteTemplate gMultiuseSpriteTemplate = {0};
-EWRAM_DATA static struct MonSpritesGfxManager *sMonSpritesGfxManagers[MON_SPR_GFX_MANAGERS_COUNT] = {NULL};
+EWRAM_DATA static struct MonSpritesGfxManager *sMonSpritesGfxManager = NULL;
 
 #include "data/battle_moves.h"
 
@@ -1973,72 +1967,72 @@ static const struct SpriteTemplate sTrainerBackSpriteTemplates[] =
 {
     [TRAINER_BACK_PIC_BRENDAN] = {
         .tileTag = TAG_NONE,
-        .paletteTag = 0,
+        .paletteTag = TRAINER_BACK_PIC_BRENDAN,
         .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = NULL,
+        .anims = gBackAnims_4Frames,
         .images = gTrainerBackPicTable_Brendan,
         .affineAnims = gAffineAnims_BattleSpritePlayerSide,
         .callback = SpriteCB_BattleSpriteStartSlideLeft,
     },
     [TRAINER_BACK_PIC_MAY] = {
         .tileTag = TAG_NONE,
-        .paletteTag = 0,
+        .paletteTag = TRAINER_BACK_PIC_MAY,
         .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = NULL,
+        .anims = gBackAnims_4Frames,
         .images = gTrainerBackPicTable_May,
         .affineAnims = gAffineAnims_BattleSpritePlayerSide,
         .callback = SpriteCB_BattleSpriteStartSlideLeft,
     },
     [TRAINER_BACK_PIC_RED] = {
         .tileTag = TAG_NONE,
-        .paletteTag = 0,
+        .paletteTag = TRAINER_BACK_PIC_RED,
         .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = NULL,
+        .anims = gBackAnims_5Frames,
         .images = gTrainerBackPicTable_Red,
         .affineAnims = gAffineAnims_BattleSpritePlayerSide,
         .callback = SpriteCB_BattleSpriteStartSlideLeft,
     },
     [TRAINER_BACK_PIC_LEAF] = {
         .tileTag = TAG_NONE,
-        .paletteTag = 0,
+        .paletteTag = TRAINER_BACK_PIC_LEAF,
         .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = NULL,
+        .anims = gBackAnims_5Frames,
         .images = gTrainerBackPicTable_Leaf,
         .affineAnims = gAffineAnims_BattleSpritePlayerSide,
         .callback = SpriteCB_BattleSpriteStartSlideLeft,
     },
     [TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN] = {
         .tileTag = TAG_NONE,
-        .paletteTag = 0,
+        .paletteTag = TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN,
         .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = NULL,
+        .anims = gBackAnims_4Frames,
         .images = gTrainerBackPicTable_RubySapphireBrendan,
         .affineAnims = gAffineAnims_BattleSpritePlayerSide,
         .callback = SpriteCB_BattleSpriteStartSlideLeft,
     },
     [TRAINER_BACK_PIC_RUBY_SAPPHIRE_MAY] = {
         .tileTag = TAG_NONE,
-        .paletteTag = 0,
+        .paletteTag = TRAINER_BACK_PIC_RUBY_SAPPHIRE_MAY,
         .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = NULL,
+        .anims = gBackAnims_4Frames,
         .images = gTrainerBackPicTable_RubySapphireMay,
         .affineAnims = gAffineAnims_BattleSpritePlayerSide,
         .callback = SpriteCB_BattleSpriteStartSlideLeft,
     },
     [TRAINER_BACK_PIC_WALLY] = {
         .tileTag = TAG_NONE,
-        .paletteTag = 0,
+        .paletteTag = TRAINER_BACK_PIC_WALLY,
         .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = NULL,
+        .anims = gBackAnims_4Frames,
         .images = gTrainerBackPicTable_Wally,
         .affineAnims = gAffineAnims_BattleSpritePlayerSide,
         .callback = SpriteCB_BattleSpriteStartSlideLeft,
     },
     [TRAINER_BACK_PIC_STEVEN] = {
         .tileTag = TAG_NONE,
-        .paletteTag = 0,
+        .paletteTag = TRAINER_BACK_PIC_STEVEN,
         .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = NULL,
+        .anims = gBackAnims_4Frames,
         .images = gTrainerBackPicTable_Steven,
         .affineAnims = gAffineAnims_BattleSpritePlayerSide,
         .callback = SpriteCB_BattleSpriteStartSlideLeft,
@@ -2103,17 +2097,17 @@ static const u16 sHMMoves[] =
     MOVE_ROCK_SMASH, MOVE_WATERFALL, MOVE_DIVE, HM_MOVES_END
 };
 
-static const struct SpeciesItem sAlteringCaveWildMonHeldItems[] =
+static const u16 sAlteringCaveWildMonHeldItems[] =
 {
-    {SPECIES_NONE,      ITEM_NONE},
-    {SPECIES_MAREEP,    ITEM_GANLON_BERRY},
-    {SPECIES_PINECO,    ITEM_APICOT_BERRY},
-    {SPECIES_HOUNDOUR,  ITEM_BIG_MUSHROOM},
-    {SPECIES_TEDDIURSA, ITEM_PETAYA_BERRY},
-    {SPECIES_AIPOM,     ITEM_BERRY_JUICE},
-    {SPECIES_SHUCKLE,   ITEM_BERRY_JUICE},
-    {SPECIES_STANTLER,  ITEM_PETAYA_BERRY},
-    {SPECIES_SMEARGLE,  ITEM_SALAC_BERRY},
+    ITEM_NONE,
+    ITEM_GANLON_BERRY,
+    ITEM_APICOT_BERRY,
+    ITEM_BIG_MUSHROOM,
+    ITEM_PETAYA_BERRY,
+    ITEM_BERRY_JUICE,
+    ITEM_BERRY_JUICE,
+    ITEM_PETAYA_BERRY,
+    ITEM_SALAC_BERRY,
 };
 
 static const struct OamData sOamData_64x64 =
@@ -3475,10 +3469,8 @@ void SetMultiuseSpriteTemplateToPokemon(u16 speciesTag, u8 battlerPosition)
 {
     if (gMonSpritesGfxPtr != NULL)
         gMultiuseSpriteTemplate = gMonSpritesGfxPtr->templates[battlerPosition];
-    else if (sMonSpritesGfxManagers[MON_SPR_GFX_MANAGER_A])
-        gMultiuseSpriteTemplate = sMonSpritesGfxManagers[MON_SPR_GFX_MANAGER_A]->templates[battlerPosition];
-    else if (sMonSpritesGfxManagers[MON_SPR_GFX_MANAGER_B])
-        gMultiuseSpriteTemplate = sMonSpritesGfxManagers[MON_SPR_GFX_MANAGER_B]->templates[battlerPosition];
+    else if (sMonSpritesGfxManager != NULL)
+        gMultiuseSpriteTemplate = sMonSpritesGfxManager->templates[battlerPosition];
     else
         gMultiuseSpriteTemplate = gBattlerSpriteTemplates[battlerPosition];
 
@@ -3493,14 +3485,13 @@ void SetMultiuseSpriteTemplateToPokemon(u16 speciesTag, u8 battlerPosition)
 
 void SetMultiuseSpriteTemplateToTrainerBack(u16 trainerPicId, u8 battlerPosition)
 {
-    gMultiuseSpriteTemplate.paletteTag = trainerPicId;
     if (battlerPosition == B_POSITION_PLAYER_LEFT || battlerPosition == B_POSITION_PLAYER_RIGHT)
     {
         gMultiuseSpriteTemplate = sTrainerBackSpriteTemplates[trainerPicId];
-        gMultiuseSpriteTemplate.anims = gTrainerBackAnimsPtrTable[trainerPicId];
     }
     else
     {
+        gMultiuseSpriteTemplate.paletteTag = trainerPicId;
         if (gMonSpritesGfxPtr != NULL)
             gMultiuseSpriteTemplate = gMonSpritesGfxPtr->templates[battlerPosition];
         else
@@ -6608,67 +6599,52 @@ void SetMonPreventsSwitchingString(void)
     BattleStringExpandPlaceholders(gText_PkmnsXPreventsSwitching, gStringVar4);
 }
 
-static s32 GetWildMonTableIdInAlteringCave(u16 species)
+static void SetWildMonHeldItemToPartySlot(u32 partySlot, u32 chanceNoItem, u32 chanceNotRare)
 {
-    s32 i;
-    for (i = 0; i < (s32) ARRAY_COUNT(sAlteringCaveWildMonHeldItems); i++)
-        if (sAlteringCaveWildMonHeldItems[i].species == species)
-            return i;
-    return 0;
+    struct Pokemon *enemyParty = &gEnemyParty[partySlot];
+    u32 species = GetMonData(enemyParty, MON_DATA_SPECIES, 0);
+    u32 itemCommon = gSpeciesInfo[species].itemCommon;
+    u16 itemRare = gSpeciesInfo[species].itemRare;
+    u16 rnd = Random() % 100;
+    if (gMapHeader.mapLayoutId == LAYOUT_ALTERING_CAVE)
+    {
+        u32 alteringCaveId = VarGet(VAR_ALTERING_CAVE_WILD_SET);
+        if (alteringCaveId != 0 && alteringCaveId < ARRAY_COUNT(sAlteringCaveWildMonHeldItems))
+        {
+            // In active Altering Cave, use special item list
+            if (rnd < chanceNotRare)
+                return;
+            SetMonData(enemyParty, MON_DATA_HELD_ITEM, &sAlteringCaveWildMonHeldItems[alteringCaveId]);
+        }
+    }
+    else if (itemCommon == itemRare && itemCommon != ITEM_NONE)
+    {
+        // Both held items are the same, 100% chance to hold item
+        SetMonData(enemyParty, MON_DATA_HELD_ITEM, &itemCommon);
+    }
+    else
+    {
+        // In inactive Altering Cave, use normal items
+        if (rnd < chanceNoItem)
+            return;
+        if (rnd < chanceNotRare)
+            SetMonData(enemyParty, MON_DATA_HELD_ITEM, &itemCommon);
+        else
+            SetMonData(enemyParty, MON_DATA_HELD_ITEM, &itemRare);
+    }
 }
 
 void SetWildMonHeldItem(void)
 {
     if (!(gBattleTypeFlags & (BATTLE_TYPE_LEGENDARY | BATTLE_TYPE_TRAINER | BATTLE_TYPE_PYRAMID | BATTLE_TYPE_PIKE)))
     {
-        u16 rnd = Random() % 100;
-        u16 species = GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, 0);
-        u16 chanceNoItem = 45;
-        u16 chanceNotRare = 95;
+        u16 chanceNoItem = 45, chanceNotRare = 95;
         if (!GetMonData(&gPlayerParty[0], MON_DATA_SANITY_IS_EGG, 0)
             && GetMonAbility(&gPlayerParty[0]) == ABILITY_COMPOUND_EYES)
         {
-            chanceNoItem = 20;
-            chanceNotRare = 80;
+            chanceNoItem = 20, chanceNotRare = 80;
         }
-        if (gMapHeader.mapLayoutId == LAYOUT_ALTERING_CAVE)
-        {
-            s32 alteringCaveId = GetWildMonTableIdInAlteringCave(species);
-            if (alteringCaveId != 0)
-            {
-                // In active Altering Cave, use special item list
-                if (rnd < chanceNotRare)
-                    return;
-                SetMonData(&gEnemyParty[0], MON_DATA_HELD_ITEM, &sAlteringCaveWildMonHeldItems[alteringCaveId].item);
-            }
-            else
-            {
-                // In inactive Altering Cave, use normal items
-                if (rnd < chanceNoItem)
-                    return;
-                if (rnd < chanceNotRare)
-                    SetMonData(&gEnemyParty[0], MON_DATA_HELD_ITEM, &gSpeciesInfo[species].itemCommon);
-                else
-                    SetMonData(&gEnemyParty[0], MON_DATA_HELD_ITEM, &gSpeciesInfo[species].itemRare);
-            }
-        }
-        else
-        {
-            if (gSpeciesInfo[species].itemCommon == gSpeciesInfo[species].itemRare && gSpeciesInfo[species].itemCommon != ITEM_NONE)
-            {
-                // Both held items are the same, 100% chance to hold item
-                SetMonData(&gEnemyParty[0], MON_DATA_HELD_ITEM, &gSpeciesInfo[species].itemCommon);
-            }
-            else
-            {
-                if (rnd < chanceNoItem)
-                    return;
-                if (rnd < chanceNotRare)
-                    SetMonData(&gEnemyParty[0], MON_DATA_HELD_ITEM, &gSpeciesInfo[species].itemCommon);
-                else
-                    SetMonData(&gEnemyParty[0], MON_DATA_HELD_ITEM, &gSpeciesInfo[species].itemRare);
-            }
-        }
+        SetWildMonHeldItemToPartySlot(0, chanceNoItem, chanceNotRare);
     }
 }
 
@@ -6945,117 +6921,60 @@ static bool8 ShouldSkipFriendshipChange(void)
 }
 
 // The below functions are for the 'MonSpritesGfxManager', a method of allocating
-// space for Pokémon sprites. These are only used for the summary screen Pokémon
-// sprites (unless gMonSpritesGfxPtr is in use), but were set up for more general use.
-// Only the 'default' mode (MON_SPR_GFX_MODE_NORMAL) is used, which is set
-// up to allocate 4 sprites using the battler sprite templates (gBattlerSpriteTemplates).
-// MON_SPR_GFX_MODE_BATTLE is identical but never used.
-// MON_SPR_GFX_MODE_FULL_PARTY is set up to allocate 7 sprites (party + trainer?)
-// using a generic 64x64 template, and is also never used.
-
-// Between the unnecessarily large sizes below, a mistake allocating the spritePointers
-// field, and the fact that ultimately only 1 of the 4 sprite positions is used, this
-// system wastes a good deal of memory.
+// space for Pokémon sprites. This is only used for the summary screen Pokémon
+// sprites (unless gMonSpritesGfxPtr is in use).
+// It is set up to allocate 4 sprites using the battler sprite templates (gBattlerSpriteTemplates).
 
 #define ALLOC_FAIL_BUFFER (1 << 0)
 #define ALLOC_FAIL_STRUCT (1 << 1)
-#define GFX_MANAGER_ACTIVE 0xA3 // Arbitrary value
 
-static void InitMonSpritesGfx_Battle(struct MonSpritesGfxManager* gfx)
+struct MonSpritesGfxManager *CreateMonSpritesGfxManager(void)
 {
-    u16 i, j;
-    for (i = 0; i < gfx->numSprites; i++)
-    {
-        gfx->templates[i] = gBattlerSpriteTemplates[i];
-        for (j = 0; j < gfx->numFrames; j++)
-            gfx->frameImages[i * gfx->numFrames + j].data = &gfx->spritePointers[i][j * MON_PIC_SIZE];
-
-        gfx->templates[i].images = &gfx->frameImages[i * gfx->numFrames];
-    }
-}
-
-static void InitMonSpritesGfx_FullParty(struct MonSpritesGfxManager* gfx)
-{
-    u16 i, j;
-    for (i = 0; i < gfx->numSprites; i++)
-    {
-        gfx->templates[i] = sSpriteTemplate_64x64;
-        for (j = 0; j < gfx->numFrames; j++)
-            gfx->frameImages[i * gfx->numSprites + j].data = &gfx->spritePointers[i][j * MON_PIC_SIZE];
-
-        gfx->templates[i].images = &gfx->frameImages[i * gfx->numSprites];
-        gfx->templates[i].anims = gAnims_MonPic;
-        gfx->templates[i].paletteTag = i;
-    }
-}
-
-struct MonSpritesGfxManager *CreateMonSpritesGfxManager(u8 managerId, u8 mode)
-{
-    u8 i;
+    u32 i;
     u8 failureFlags;
     struct MonSpritesGfxManager *gfx;
 
     failureFlags = 0;
-    managerId %= MON_SPR_GFX_MANAGERS_COUNT;
     gfx = AllocZeroed(sizeof(*gfx));
     if (gfx == NULL)
         return NULL;
 
-    switch (mode)
-    {
-    case MON_SPR_GFX_MODE_FULL_PARTY:
-        gfx->numSprites = PARTY_SIZE + 1;
-        gfx->numSprites2 = PARTY_SIZE + 1;
-        gfx->numFrames = MAX_MON_PIC_FRAMES;
-        gfx->dataSize = 1;
-        gfx->mode = MON_SPR_GFX_MODE_FULL_PARTY;
-        break;
- // case MON_SPR_GFX_MODE_BATTLE:
-    case MON_SPR_GFX_MODE_NORMAL:
-    default:
-        gfx->numSprites = MAX_BATTLERS_COUNT;
-        gfx->numSprites2 = MAX_BATTLERS_COUNT;
-        gfx->numFrames = MAX_MON_PIC_FRAMES;
-        gfx->dataSize = 1;
-        gfx->mode = MON_SPR_GFX_MODE_NORMAL;
-        break;
-    }
+    #define GFX_MANAGER_NUM_SPRITES MAX_BATTLERS_COUNT
+    #define GFX_MANAGER_NUM_FRAMES MAX_MON_PIC_FRAMES
 
     // Set up sprite / sprite pointer buffers
-    gfx->spriteBuffer = AllocZeroed(gfx->dataSize * MON_PIC_SIZE * MAX_MON_PIC_FRAMES * gfx->numSprites);
-    gfx->spritePointers = AllocZeroed(gfx->numSprites * 32); // ? Only * 4 is necessary, perhaps they were thinking bits.
+    gfx->spriteBuffer = AllocZeroed(MON_PIC_SIZE * GFX_MANAGER_NUM_FRAMES * GFX_MANAGER_NUM_SPRITES);
+    gfx->spritePointers = AllocZeroed(GFX_MANAGER_NUM_SPRITES * GFX_MANAGER_NUM_FRAMES);
     if (gfx->spriteBuffer == NULL || gfx->spritePointers == NULL)
     {
         failureFlags |= ALLOC_FAIL_BUFFER;
     }
     else
     {
-        for (i = 0; i < gfx->numSprites; i++)
-            gfx->spritePointers[i] = gfx->spriteBuffer + (gfx->dataSize * MON_PIC_SIZE * MAX_MON_PIC_FRAMES * i);
+        for (i = 0; i < GFX_MANAGER_NUM_SPRITES; i++)
+            gfx->spritePointers[i] = gfx->spriteBuffer + (MON_PIC_SIZE * GFX_MANAGER_NUM_FRAMES * i);
     }
 
     // Set up sprite structs
-    gfx->templates = AllocZeroed(sizeof(struct SpriteTemplate) * gfx->numSprites);
-    gfx->frameImages = AllocZeroed(sizeof(struct SpriteFrameImage) * gfx->numSprites * gfx->numFrames);
+    gfx->templates = AllocZeroed(sizeof(struct SpriteTemplate) * GFX_MANAGER_NUM_SPRITES);
+    gfx->frameImages = AllocZeroed(sizeof(struct SpriteFrameImage) * GFX_MANAGER_NUM_SPRITES * GFX_MANAGER_NUM_FRAMES);
     if (gfx->templates == NULL || gfx->frameImages == NULL)
     {
         failureFlags |= ALLOC_FAIL_STRUCT;
     }
     else
     {
-        for (i = 0; i < gfx->numFrames * gfx->numSprites; i++)
+        u32 j;
+        for (i = 0; i < GFX_MANAGER_NUM_FRAMES * GFX_MANAGER_NUM_SPRITES; i++)
             gfx->frameImages[i].size = MON_PIC_SIZE;
 
-        switch (gfx->mode)
+        for (i = 0; i < GFX_MANAGER_NUM_SPRITES; i++)
         {
-        case MON_SPR_GFX_MODE_FULL_PARTY:
-            InitMonSpritesGfx_FullParty(gfx);
-            break;
-        case MON_SPR_GFX_MODE_NORMAL:
-        case MON_SPR_GFX_MODE_BATTLE:
-        default:
-            InitMonSpritesGfx_Battle(gfx);
-            break;
+            gfx->templates[i] = gBattlerSpriteTemplates[i];
+            for (j = 0; j < GFX_MANAGER_NUM_FRAMES; j++)
+                gfx->frameImages[i * GFX_MANAGER_NUM_FRAMES + j].data = &gfx->spritePointers[i][j * MON_PIC_SIZE];
+
+            gfx->templates[i].images = &gfx->frameImages[i * GFX_MANAGER_NUM_FRAMES];
         }
     }
 
@@ -7079,23 +6998,22 @@ struct MonSpritesGfxManager *CreateMonSpritesGfxManager(u8 managerId, u8 mode)
     }
     else
     {
-        gfx->active = GFX_MANAGER_ACTIVE;
-        sMonSpritesGfxManagers[managerId] = gfx;
+        gfx->active = TRUE;
+        sMonSpritesGfxManager = gfx;
     }
 
-    return sMonSpritesGfxManagers[managerId];
+    return sMonSpritesGfxManager;
 }
 
-void DestroyMonSpritesGfxManager(u8 managerId)
+void DestroyMonSpritesGfxManager(void)
 {
     struct MonSpritesGfxManager *gfx;
 
-    managerId %= MON_SPR_GFX_MANAGERS_COUNT;
-    gfx = sMonSpritesGfxManagers[managerId];
+    gfx = sMonSpritesGfxManager;
     if (gfx == NULL)
         return;
 
-    if (gfx->active != GFX_MANAGER_ACTIVE)
+    if (gfx->active == FALSE)
     {
         memset(gfx, 0, sizeof(*gfx));
     }
@@ -7110,18 +7028,15 @@ void DestroyMonSpritesGfxManager(u8 managerId)
     }
 }
 
-u8 *MonSpritesGfxManager_GetSpritePtr(u8 managerId, u8 spriteNum)
+u8 *MonSpritesGfxManager_GetSpritePtr(void)
 {
-    struct MonSpritesGfxManager *gfx = sMonSpritesGfxManagers[managerId % MON_SPR_GFX_MANAGERS_COUNT];
-    if (gfx->active != GFX_MANAGER_ACTIVE)
+    struct MonSpritesGfxManager *gfx = sMonSpritesGfxManager;
+    if (gfx->active == FALSE)
     {
         return NULL;
     }
     else
     {
-        if (spriteNum >= gfx->numSprites)
-            spriteNum = 0;
-
-        return gfx->spritePointers[spriteNum];
+        return gfx->spritePointers[B_POSITION_OPPONENT_LEFT];
     }
 }
