@@ -5070,4 +5070,19 @@ extern const u8 gMailTilemap_Retro[];
 extern const u8 gMonMarkingsMenu_Gfx[];
 extern const u16 gMonMarkingsMenu_Pal[];
 
+// New Battle Anim Particles
+extern const u32 gBattleAnimSpriteGfx_WhiteStreak[];
+extern const u32 gBattleAnimSpritePal_WhiteStreak[];
+extern const u32 gBattleAnimSpriteGfx_PurpleJab[];
+extern const u32 gBattleAnimSpritePal_PurpleJab[];
+extern const u32 gBattleAnimSpritePal_ToxicSpikes[];
+extern const u32 gBattleAnimSpriteGfx_EnergyBall[];
+extern const u32 gBattleAnimSpritePal_EnergyBall[];
+extern const u32 gBattleAnimSpriteGfx_MegaStone[];
+extern const u32 gBattleAnimSpritePal_MegaStone[];
+extern const u32 gBattleAnimSpriteGfx_MegaParticles[];
+extern const u32 gBattleAnimSpritePal_MegaParticles[];
+extern const u32 gBattleAnimSpriteGfx_MegaSymbol[];
+extern const u32 gBattleAnimSpritePal_MegaSymbol[];
+
 #endif //GUARD_GRAPHICS_H

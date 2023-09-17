@@ -87,20 +87,32 @@ gSpecialVars::
 
 	.include "data/specials.inc"
 
-gStdScripts::
-	.4byte Std_ObtainItem              @ STD_OBTAIN_ITEM
-	.4byte Std_FindItem                @ STD_FIND_ITEM
-	.4byte Std_MsgboxNPC               @ MSGBOX_NPC
-	.4byte Std_MsgboxSign              @ MSGBOX_SIGN
-	.4byte Std_MsgboxDefault           @ MSGBOX_DEFAULT
-	.4byte Std_MsgboxYesNo             @ MSGBOX_YESNO
-	.4byte Std_MsgboxAutoclose         @ MSGBOX_AUTOCLOSE
-	.4byte Std_ObtainDecoration        @ STD_OBTAIN_DECORATION
-	.4byte Std_RegisteredInMatchCall   @ STD_REGISTER_MATCH_CALL
-	.4byte Std_MsgboxGetPoints         @ MSGBOX_GETPOINTS
-	.4byte Std_MsgboxPokenav           @ MSGBOX_POKENAV
-gStdScripts_End::
+gStdScripts:: @ 81DC2A0
+	.4byte Std_ObtainItem
+	.4byte Std_FindItem
+	.4byte Std_MsgboxNPC
+	.4byte Std_MsgboxSign
+	.4byte Std_MsgboxDefault
+	.4byte Std_MsgboxYesNo
+	.4byte Std_MsgboxAutoclose
+	.4byte Std_ObtainDecoration
+	.4byte Std_RegisteredInMatchCall
+	.4byte Std_9
+	.4byte Std_10
+gStdScripts_End:: @ 81DC2CC
 
+	.include "data/maps/PalletTown/scripts.inc"
+	.include "data/maps/ViridianCity/scripts.inc"
+	.include "data/maps/PewterCity/scripts.inc"
+	.include "data/maps/CeruleanCity/scripts.inc"
+	.include "data/maps/VermilionCity/scripts.inc"
+	.include "data/maps/LavenderTown/scripts.inc"
+	.include "data/maps/CeladonCity/scripts.inc"
+	.include "data/maps/FuchsiaCity/scripts.inc"
+	.include "data/maps/SaffronCity/scripts.inc"
+	.include "data/maps/SaffronCity_Classic/scripts.inc"	
+	.include "data/maps/CinnabarIsland/scripts.inc"
+	.include "data/maps/IndigoPlateau_Exterior/scripts.inc"
 	.include "data/maps/PetalburgCity/scripts.inc"
 	.include "data/maps/SlateportCity/scripts.inc"
 	.include "data/maps/MauvilleCity/scripts.inc"
@@ -117,6 +129,32 @@ gStdScripts_End::
 	.include "data/maps/FallarborTown/scripts.inc"
 	.include "data/maps/VerdanturfTown/scripts.inc"
 	.include "data/maps/PacifidlogTown/scripts.inc"
+	.include "data/maps/Route1/scripts.inc"
+	.include "data/maps/Route2/scripts.inc"
+	.include "data/maps/Route3/scripts.inc"
+	.include "data/maps/Route4/scripts.inc"
+	.include "data/maps/Route5/scripts.inc"
+	.include "data/maps/Route6/scripts.inc"
+	.include "data/maps/Route7/scripts.inc"
+	.include "data/maps/Route8/scripts.inc"
+	.include "data/maps/Route9/scripts.inc"
+	.include "data/maps/Route10/scripts.inc"
+	.include "data/maps/Route11/scripts.inc"
+	.include "data/maps/Route12/scripts.inc"
+	.include "data/maps/Route13/scripts.inc"
+	.include "data/maps/Route14/scripts.inc"
+	.include "data/maps/Route15/scripts.inc"
+	.include "data/maps/Route16/scripts.inc"
+	.include "data/maps/Route17/scripts.inc"
+	.include "data/maps/Route18/scripts.inc"
+	.include "data/maps/Route19/scripts.inc"
+	.include "data/maps/Route20/scripts.inc"
+	.include "data/maps/Route21_North/scripts.inc"
+	.include "data/maps/Route21_South/scripts.inc"
+	.include "data/maps/Route22/scripts.inc"
+	.include "data/maps/Route23/scripts.inc"
+	.include "data/maps/Route24/scripts.inc"
+	.include "data/maps/Route25/scripts.inc"
 	.include "data/maps/Route101/scripts.inc"
 	.include "data/maps/Route102/scripts.inc"
 	.include "data/maps/Route103/scripts.inc"
@@ -447,8 +485,442 @@ gStdScripts_End::
 	.include "data/maps/TerraCave_End/scripts.inc"
 	.include "data/maps/AlteringCave/scripts.inc"
 	.include "data/maps/MeteorFalls_StevensCave/scripts.inc"
-	.include "data/scripts/shared_secret_base.inc"
-	.include "data/maps/BattleColosseum_2P/scripts.inc"
+	.include "data/maps/SecretBase_BlueCave1/scripts.inc"
+	.include "data/maps/SecretBase_BlueCave2/scripts.inc"
+	.include "data/maps/SecretBase_BlueCave3/scripts.inc"
+	.include "data/maps/SecretBase_BlueCave4/scripts.inc"
+	.include "data/maps/SecretBase_BrownCave1/scripts.inc"
+	.include "data/maps/SecretBase_BrownCave2/scripts.inc"
+	.include "data/maps/SecretBase_BrownCave3/scripts.inc"
+	.include "data/maps/SecretBase_BrownCave4/scripts.inc"
+	.include "data/maps/SecretBase_RedCave1/scripts.inc"
+	.include "data/maps/SecretBase_RedCave2/scripts.inc"
+	.include "data/maps/SecretBase_RedCave3/scripts.inc"
+	.include "data/maps/SecretBase_RedCave4/scripts.inc"
+	.include "data/maps/SecretBase_Shrub1/scripts.inc"
+	.include "data/maps/SecretBase_Shrub2/scripts.inc"
+	.include "data/maps/SecretBase_Shrub3/scripts.inc"
+	.include "data/maps/SecretBase_Shrub4/scripts.inc"
+	.include "data/maps/SecretBase_Tree1/scripts.inc"
+	.include "data/maps/SecretBase_Tree2/scripts.inc"
+	.include "data/maps/SecretBase_Tree3/scripts.inc"
+	.include "data/maps/SecretBase_Tree4/scripts.inc"
+	.include "data/maps/SecretBase_YellowCave1/scripts.inc"
+	.include "data/maps/SecretBase_YellowCave2/scripts.inc"
+	.include "data/maps/SecretBase_YellowCave3/scripts.inc"
+	.include "data/maps/SecretBase_YellowCave4/scripts.inc"
+	.include "data/maps/PalletTown_RedsHouse_1F/scripts.inc"
+	.include "data/maps/PalletTown_RedsHouse_2F/scripts.inc"
+	.include "data/maps/PalletTown_BluesHouse/scripts.inc"
+	.include "data/maps/PalletTown_ProfessorOaksLab/scripts.inc"
+	.include "data/maps/ViridianCity_House1/scripts.inc"
+	.include "data/maps/ViridianCity_Gym/scripts.inc"
+	.include "data/maps/ViridianCity_TrainersSchool/scripts.inc"
+	.include "data/maps/ViridianCity_Mart/scripts.inc"
+	.include "data/maps/ViridianCity_PokemonCenter_1F/scripts.inc"
+	.include "data/maps/ViridianCity_PokemonCenter_2F/scripts.inc"
+	.include "data/maps/PewterCity_Museum_1F/scripts.inc"
+	.include "data/maps/PewterCity_Museum_2F/scripts.inc"
+	.include "data/maps/PewterCity_Gym/scripts.inc"
+	.include "data/maps/PewterCity_Mart/scripts.inc"
+	.include "data/maps/PewterCity_House1/scripts.inc"
+	.include "data/maps/PewterCity_PokemonCenter_1F/scripts.inc"
+	.include "data/maps/PewterCity_PokemonCenter_2F/scripts.inc"
+	.include "data/maps/PewterCity_House2/scripts.inc"
+	.include "data/maps/CeruleanCity_House1/scripts.inc"
+	.include "data/maps/CeruleanCity_House2/scripts.inc"
+	.include "data/maps/CeruleanCity_House3/scripts.inc"
+	.include "data/maps/CeruleanCity_PokemonCenter_1F/scripts.inc"
+	.include "data/maps/CeruleanCity_PokemonCenter_2F/scripts.inc"
+	.include "data/maps/CeruleanCity_Gym/scripts.inc"
+	.include "data/maps/CeruleanCity_BikeShop/scripts.inc"
+	.include "data/maps/CeruleanCity_Mart/scripts.inc"
+	.include "data/maps/CeruleanCity_House4/scripts.inc"
+	.include "data/maps/CeruleanCity_House5/scripts.inc"
+	.include "data/maps/VermilionCity_House1/scripts.inc"
+	.include "data/maps/VermilionCity_PokemonCenter_1F/scripts.inc"
+	.include "data/maps/VermilionCity_PokemonCenter_2F/scripts.inc"
+	.include "data/maps/VermilionCity_PokemonFanClub/scripts.inc"
+	.include "data/maps/VermilionCity_Mart/scripts.inc"
+	.include "data/maps/VermilionCity_Gym/scripts.inc"
+	.include "data/maps/VermilionCity_House3/scripts.inc"
+	.include "data/maps/LavenderTown_PokemonCenter_1F/scripts.inc"
+	.include "data/maps/LavenderTown_PokemonCenter_2F/scripts.inc"
+	.include "data/maps/LavenderTown_VolunteerPokemonHouse/scripts.inc"
+	.include "data/maps/LavenderTown_House1/scripts.inc"
+	.include "data/maps/LavenderTown_House2/scripts.inc"
+	.include "data/maps/LavenderTown_Mart/scripts.inc"
+	.include "data/maps/CeladonCity_DepartmentStore_1F/scripts.inc"
+	.include "data/maps/CeladonCity_DepartmentStore_2F/scripts.inc"
+	.include "data/maps/CeladonCity_DepartmentStore_3F/scripts.inc"
+	.include "data/maps/CeladonCity_DepartmentStore_4F/scripts.inc"
+	.include "data/maps/CeladonCity_DepartmentStore_5F/scripts.inc"
+	.include "data/maps/CeladonCity_DepartmentStore_Roof/scripts.inc"
+	.include "data/maps/CeladonCity_DepartmentStore_Elevator/scripts.inc"
+	.include "data/maps/CeladonCity_Condominiums_1F/scripts.inc"
+	.include "data/maps/CeladonCity_Condominiums_2F/scripts.inc"
+	.include "data/maps/CeladonCity_Condominiums_3F/scripts.inc"
+	.include "data/maps/CeladonCity_Condominiums_Roof/scripts.inc"
+	.include "data/maps/CeladonCity_Condominiums_RoofRoom/scripts.inc"
+	.include "data/maps/CeladonCity_PokemonCenter_1F/scripts.inc"
+	.include "data/maps/CeladonCity_PokemonCenter_2F/scripts.inc"
+	.include "data/maps/CeladonCity_GameCorner/scripts.inc"
+	.include "data/maps/CeladonCity_GameCorner_PrizeRoom/scripts.inc"
+	.include "data/maps/CeladonCity_Gym/scripts.inc"
+	.include "data/maps/CeladonCity_Restaurant/scripts.inc"
+	.include "data/maps/CeladonCity_House1/scripts.inc"
+	.include "data/maps/CeladonCity_Hotel/scripts.inc"
+	.include "data/maps/FuchsiaCity_SafariZone_Entrance/scripts.inc"
+	.include "data/maps/FuchsiaCity_Mart/scripts.inc"
+	.include "data/maps/FuchsiaCity_ZooBuilding/scripts.inc"
+	.include "data/maps/FuchsiaCity_Gym/scripts.inc"
+	.include "data/maps/FuchsiaCity_House1/scripts.inc"
+	.include "data/maps/FuchsiaCity_PokemonCenter_1F/scripts.inc"
+	.include "data/maps/FuchsiaCity_PokemonCenter_2F/scripts.inc"
+	.include "data/maps/FuchsiaCity_Building1/scripts.inc"
+	.include "data/maps/FuchsiaCity_House2/scripts.inc"
+	.include "data/maps/FuchsiaCity_House3/scripts.inc"
+	.include "data/maps/SaffronCity_House1_1F/scripts.inc"
+	.include "data/maps/SaffronCity_House1_2F/scripts.inc"
+	.include "data/maps/SaffronCity_Dojo/scripts.inc"
+	.include "data/maps/SaffronCity_Gym/scripts.inc"
+	.include "data/maps/SaffronCity_House2/scripts.inc"
+	.include "data/maps/SaffronCity_Mart/scripts.inc"
+	.include "data/maps/SaffronCity_PokemonCenter_1F/scripts.inc"
+	.include "data/maps/SaffronCity_PokemonCenter_2F/scripts.inc"
+	.include "data/maps/SaffronCity_House3/scripts.inc"
+	.include "data/maps/SaffronCity_PokemonTrainerFanClub/scripts.inc"
+	.include "data/maps/CinnabarIsland_Gym/scripts.inc"
+	.include "data/maps/CinnabarIsland_PokemonLab_Entrance/scripts.inc"
+	.include "data/maps/CinnabarIsland_PokemonLab_Lounge/scripts.inc"
+	.include "data/maps/CinnabarIsland_PokemonLab_ResearchRoom/scripts.inc"
+	.include "data/maps/CinnabarIsland_PokemonLab_ExperimentRoom/scripts.inc"
+	.include "data/maps/CinnabarIsland_PokemonCenter_1F/scripts.inc"
+	.include "data/maps/CinnabarIsland_PokemonCenter_2F/scripts.inc"
+	.include "data/maps/CinnabarIsland_Mart/scripts.inc"
+	.include "data/maps/IndigoPlateau_PokemonCenter_1F/scripts.inc"
+	.include "data/maps/IndigoPlateau_PokemonCenter_2F/scripts.inc"
+	.include "data/maps/Route2_ViridianForest_SouthEntrance/scripts.inc"
+	.include "data/maps/Route2_House/scripts.inc"
+	.include "data/maps/Route2_EastBuilding/scripts.inc"
+	.include "data/maps/Route2_ViridianForest_NorthEntrance/scripts.inc"
+	.include "data/maps/Route4_PokemonCenter_1F/scripts.inc"
+	.include "data/maps/Route4_PokemonCenter_2F/scripts.inc"
+	.include "data/maps/Route5_PokemonDayCare/scripts.inc"
+	.include "data/maps/Route5_SouthEntrance/scripts.inc"
+	.include "data/maps/Route6_NorthEntrance/scripts.inc"
+	.include "data/maps/Route7_EastEntrance/scripts.inc"
+	.include "data/maps/Route8_WestEntrance/scripts.inc"
+	.include "data/maps/Route10_PokemonCenter_1F/scripts.inc"
+	.include "data/maps/Route10_PokemonCenter_2F/scripts.inc"
+	.include "data/maps/Route11_EastEntrance_1F/scripts.inc"
+	.include "data/maps/Route11_EastEntrance_2F/scripts.inc"
+	.include "data/maps/Route12_NorthEntrance_1F/scripts.inc"
+	.include "data/maps/Route12_NorthEntrance_2F/scripts.inc"
+	.include "data/maps/Route12_FishingHouse/scripts.inc"
+	.include "data/maps/Route15_WestEntrance_1F/scripts.inc"
+	.include "data/maps/Route15_WestEntrance_2F/scripts.inc"
+	.include "data/maps/Route16_House/scripts.inc"
+	.include "data/maps/Route16_NorthEntrance_1F/scripts.inc"
+	.include "data/maps/Route16_NorthEntrance_2F/scripts.inc"
+	.include "data/maps/Route18_EastEntrance_1F/scripts.inc"
+	.include "data/maps/Route18_EastEntrance_2F/scripts.inc"
+	.include "data/maps/Route22_NorthEntrance/scripts.inc"
+	.include "data/maps/Route25_SeaCottage/scripts.inc"
+	.include "data/maps/ViridianForest/scripts.inc"
+	.include "data/maps/MtMoon_1F/scripts.inc"
+	.include "data/maps/MtMoon_B1F/scripts.inc"
+	.include "data/maps/MtMoon_B2F/scripts.inc"
+	.include "data/maps/UndergroundPath_NorthEntrance/scripts.inc"
+	.include "data/maps/UndergroundPath_NorthSouthTunnel/scripts.inc"
+	.include "data/maps/UndergroundPath_SouthEntrance/scripts.inc"
+	.include "data/maps/SSAnne_Exterior/scripts.inc"
+	.include "data/maps/SSAnne_1F_Corridor/scripts.inc"
+	.include "data/maps/SSAnne_2F_Corridor/scripts.inc"
+	.include "data/maps/SSAnne_3F_Corridor/scripts.inc"
+	.include "data/maps/SSAnne_B1F_Corridor/scripts.inc"
+	.include "data/maps/SSAnne_Deck/scripts.inc"
+	.include "data/maps/SSAnne_Kitchen/scripts.inc"
+	.include "data/maps/SSAnne_CaptainsOffice/scripts.inc"
+	.include "data/maps/SSAnne_1F_Room1/scripts.inc"
+	.include "data/maps/SSAnne_1F_Room2/scripts.inc"
+	.include "data/maps/SSAnne_1F_Room3/scripts.inc"
+	.include "data/maps/SSAnne_1F_Room4/scripts.inc"
+	.include "data/maps/SSAnne_1F_Room5/scripts.inc"
+	.include "data/maps/SSAnne_1F_Room7/scripts.inc"
+	.include "data/maps/SSAnne_2F_Room1/scripts.inc"
+	.include "data/maps/SSAnne_2F_Room2/scripts.inc"
+	.include "data/maps/SSAnne_2F_Room3/scripts.inc"
+	.include "data/maps/SSAnne_2F_Room4/scripts.inc"
+	.include "data/maps/SSAnne_2F_Room5/scripts.inc"
+	.include "data/maps/SSAnne_2F_Room6/scripts.inc"
+	.include "data/maps/SSAnne_B1F_Room1/scripts.inc"
+	.include "data/maps/SSAnne_B1F_Room2/scripts.inc"
+	.include "data/maps/SSAnne_B1F_Room3/scripts.inc"
+	.include "data/maps/SSAnne_B1F_Room4/scripts.inc"
+	.include "data/maps/SSAnne_B1F_Room5/scripts.inc"
+	.include "data/maps/SSAnne_1F_Room6/scripts.inc"
+	.include "data/maps/DiglettsCave_NorthEntrance/scripts.inc"
+	.include "data/maps/DiglettsCave_B1F/scripts.inc"
+	.include "data/maps/DiglettsCave_SouthEntrance/scripts.inc"
+	.include "data/maps/RockTunnel_1F/scripts.inc"
+	.include "data/maps/RockTunnel_B1F/scripts.inc"
+	.include "data/maps/UndergroundPath_WestEntrance/scripts.inc"
+	.include "data/maps/UndergroundPath_EastWestTunnel/scripts.inc"
+	.include "data/maps/UndergroundPath_EastEntrance/scripts.inc"
+	.include "data/maps/RocketHideout_B1F/scripts.inc"
+	.include "data/maps/RocketHideout_B2F/scripts.inc"
+	.include "data/maps/RocketHideout_B3F/scripts.inc"
+	.include "data/maps/RocketHideout_B4F/scripts.inc"
+	.include "data/maps/RocketHideout_Elevator/scripts.inc"
+	.include "data/maps/PokemonTower_1F/scripts.inc"
+	.include "data/maps/PokemonTower_2F/scripts.inc"
+	.include "data/maps/PokemonTower_3F/scripts.inc"
+	.include "data/maps/PokemonTower_4F/scripts.inc"
+	.include "data/maps/PokemonTower_5F/scripts.inc"
+	.include "data/maps/PokemonTower_6F/scripts.inc"
+	.include "data/maps/PokemonTower_7F/scripts.inc"
+	.include "data/maps/SafariZone_Center_Kanto/scripts.inc"
+	.include "data/maps/SafariZone_East_Kanto/scripts.inc"
+	.include "data/maps/SafariZone_North_Kanto/scripts.inc"
+	.include "data/maps/SafariZone_West_Kanto/scripts.inc"
+	.include "data/maps/SafariZone_Building1_Kanto/scripts.inc"
+	.include "data/maps/SafariZone_Building2_Kanto/scripts.inc"
+	.include "data/maps/SafariZone_Building3_Kanto/scripts.inc"
+	.include "data/maps/SafariZone_Building4_Kanto/scripts.inc"
+	.include "data/maps/SafariZone_SecretHouse_Kanto/scripts.inc"
+	.include "data/maps/SilphCo_1F/scripts.inc"
+	.include "data/maps/SilphCo_2F/scripts.inc"
+	.include "data/maps/SilphCo_3F/scripts.inc"
+	.include "data/maps/SilphCo_4F/scripts.inc"
+	.include "data/maps/SilphCo_5F/scripts.inc"
+	.include "data/maps/SilphCo_6F/scripts.inc"
+	.include "data/maps/SilphCo_7F/scripts.inc"
+	.include "data/maps/SilphCo_8F/scripts.inc"
+	.include "data/maps/SilphCo_9F/scripts.inc"
+	.include "data/maps/SilphCo_10F/scripts.inc"
+	.include "data/maps/SilphCo_11F/scripts.inc"
+	.include "data/maps/SilphCo_Elevator/scripts.inc"
+	.include "data/maps/PowerPlant/scripts.inc"
+	.include "data/maps/SeafoamIslands_1F/scripts.inc"
+	.include "data/maps/SeafoamIslands_B1F/scripts.inc"
+	.include "data/maps/SeafoamIslands_B2F/scripts.inc"
+	.include "data/maps/SeafoamIslands_B3F/scripts.inc"
+	.include "data/maps/SeafoamIslands_B4F/scripts.inc"
+	.include "data/maps/PokemonMansion_1F/scripts.inc"
+	.include "data/maps/PokemonMansion_2F/scripts.inc"
+	.include "data/maps/PokemonMansion_3F/scripts.inc"
+	.include "data/maps/PokemonMansion_B1F/scripts.inc"
+	.include "data/maps/VictoryRoad_1F_Kanto/scripts.inc"
+	.include "data/maps/VictoryRoad_2F_Kanto/scripts.inc"
+	.include "data/maps/VictoryRoad_3F_Kanto/scripts.inc"
+	.include "data/maps/PokemonLeague_LoreleisRoom/scripts.inc"
+	.include "data/maps/PokemonLeague_BrunosRoom/scripts.inc"
+	.include "data/maps/PokemonLeague_AgathasRoom/scripts.inc"
+	.include "data/maps/PokemonLeague_LancesRoom/scripts.inc"
+	.include "data/maps/PokemonLeague_ChampionsRoom/scripts.inc"
+	.include "data/maps/PokemonLeague_HallOfFame/scripts.inc"
+	.include "data/maps/CeruleanCave_1F/scripts.inc"
+	.include "data/maps/CeruleanCave_2F/scripts.inc"
+	.include "data/maps/CeruleanCave_B1F/scripts.inc"
+
+EventScript_SecretBasePC:: @ 823B4BB
+	lockall
+	playse SE_PC_LOGIN
+	message Text_SecretBaseBootUpPC
+	dofieldeffect FLDEFF_PCTURN_ON
+	waitstate
+	waitmessage
+	waitbuttonpress
+	playse SE_SELECT
+	goto EventScript_SecretBasePCShowMainMenu
+	end
+
+EventScript_SecretBasePCShowMainMenu:: @ 823B4D3
+	message Text_SecretBasePCStartMenu
+	waitmessage
+	goto_if_set FLAG_SECRET_BASE_REGISTRY_ENABLED, EventScript_SecretBasePCMainMenuChoice
+	goto EventScript_23B531
+	end
+
+gUnknown_0823B4E8:: @ 823B4E8 ;EventScript_SecretBasePCCancel?
+	lockall
+	goto EventScript_SecretBasePCShowMainMenu
+	end
+
+EventScript_SecretBasePCMainMenuChoice:: @ 823B4EF
+	multichoice 0, 0, 6, 0
+	switch VAR_RESULT
+	case 0, EventScript_23B581
+	case 1, EventScript_23B568
+	case 2, EventScript_23B585
+	case 3, EventScript_23B66E
+	case 127, EventScript_23B66E
+	end
+
+EventScript_23B531:: @ 823B531
+	multichoice 0, 0, 5, 0
+	switch VAR_RESULT
+	case 0, EventScript_23B581
+	case 1, EventScript_23B568
+	case 2, EventScript_23B66E
+	case 127, EventScript_23B66E
+	end
+
+EventScript_23B568:: @ 823B568
+	msgbox Text_2766AA, MSGBOX_YESNO
+	compare VAR_RESULT, 0
+	goto_if_eq EventScript_SecretBasePCShowMainMenu
+	closemessage
+	special MoveOutOfSecretBase
+	releaseall
+	end
+
+EventScript_23B581:: @ 823B581
+	special ShowSecretBaseDecorationMenu
+	end
+
+EventScript_23B585:: @ 823B585
+	special ShowSecretBaseRegistryMenu
+	end
+
+EventScript_RecordMixingSecretBasePC:: @ 823B589
+	lockall
+	message Text_SecretBaseBootUpPC
+	playse SE_PC_LOGIN
+	dofieldeffect FLDEFF_PCTURN_ON
+	waitstate
+	waitmessage
+	waitbuttonpress
+	playse SE_SELECT
+	goto EventScript_23B5A1
+	end
+
+EventScript_23B5A1:: @ 823B5A1
+	message Text_SecretBasePCStartMenu
+	waitmessage
+	multichoice 0, 0, 7, 0
+	switch VAR_RESULT
+	case 0, EventScript_23B5F0
+	case 1, EventScript_23B585
+	case 2, EventScript_23B660
+	case 3, EventScript_23B66E
+	case 127, EventScript_23B66E
+	end
+
+gUnknown_0823B5E9:: @ 823B5E9
+	lockall
+	goto EventScript_23B5A1
+	end
+
+EventScript_23B5F0:: @ 823B5F0
+	special GetCurSecretBaseRegistrationValidity
+	compare VAR_RESULT, 1
+	goto_if_eq EventScript_23B62F
+	compare VAR_RESULT, 2
+	goto_if_eq EventScript_CantRegisterTooManyBases
+	special CopyCurSecretBaseOwnerName_StrVar1
+	msgbox Text_WantToRegisterSecretBase, MSGBOX_YESNO
+	compare VAR_RESULT, 0
+	goto_if_eq EventScript_23B5A1
+	msgbox Text_2767D1, MSGBOX_SIGN
+	special ToggleCurSecretBaseRegistry
+	special DoSecretBasePCTurnOffEffect
+	releaseall
+	end
+
+EventScript_23B62F:: @ 823B62F
+	msgbox Text_276731, MSGBOX_YESNO
+	compare VAR_RESULT, 0
+	goto_if_eq EventScript_23B5A1
+	msgbox Text_2767E9, MSGBOX_SIGN
+	special ToggleCurSecretBaseRegistry
+	special DoSecretBasePCTurnOffEffect
+	releaseall
+	end
+
+EventScript_CantRegisterTooManyBases:: @ 823B652
+	msgbox Text_TooManyBasesDeleteSome, MSGBOX_SIGN
+	special DoSecretBasePCTurnOffEffect
+	closemessage
+	releaseall
+	end
+
+EventScript_23B660:: @ 823B660
+	msgbox Text_276835, MSGBOX_DEFAULT
+	goto EventScript_23B5A1
+	end
+
+EventScript_23B66E:: @ 823B66E
+	special DoSecretBasePCTurnOffEffect
+	closemessage
+	releaseall
+	end
+
+EventScript_23B674:: @ 823B674
+	special SetSecretBaseSecretsTvFlags_Poster
+	end
+
+EventScript_23B678:: @ 823B678
+	special SetSecretBaseSecretsTvFlags_MiscFurnature
+	end
+
+EventScript_23B67C:: @ 823B67C
+	special SetSecretBaseSecretsTvFlags_LargeDecorationSpot
+	end
+
+EventScript_23B680:: @ 823B680
+	special SetSecretBaseSecretsTvFlags_SmallDecorationSpot
+	end
+
+EventScript_SecretBaseSandOrnament:: @ 823B684
+	special SetSecretBaseSecretsTvFlags_SandOrnament
+	dofieldeffect FLDEFF_SAND_PILLAR
+	waitstate
+	end
+
+EventScript_SecretBaseShieldOrToyTV:: @ 823B68C
+	special GetShieldToyTVDecorationInfo
+	compare VAR_RESULT, 0
+	goto_if_eq EventScript_23B6BC
+	compare VAR_RESULT, 1
+	goto_if_eq EventScript_23B6C5
+	compare VAR_RESULT, 2
+	goto_if_eq EventScript_23B6CE
+	compare VAR_RESULT, 3
+	goto_if_eq EventScript_23B6D7
+	end
+
+EventScript_23B6BC:: @ 823B6BC
+	msgbox Text_27692B, MSGBOX_SIGN
+	end
+
+EventScript_23B6C5:: @ 823B6C5
+	msgbox Text_276974, MSGBOX_SIGN
+	end
+
+EventScript_23B6CE:: @ 823B6CE
+	msgbox Text_2769B8, MSGBOX_SIGN
+	end
+
+EventScript_23B6D7:: @ 823B6D7
+	msgbox Text_2769FF, MSGBOX_SIGN
+	end
+
+gText_23B6E0:: @ 823B6E0
+	.string "There's a small indent in the wall.$"
+
+gText_23B704:: @ 823B704
+	.string "There's a small indent in the wall.\p"
+	.string "Use the SECRET POWER?$"
+
+gText_23B73E:: @ 823B73E
+	.string "Discovered a small cavern!$"
+
+SecretBase_RedCave1_Text_23B759: @ 823B759
+	.string "Want to make your SECRET BASE here?$"
+
+	.include "data/maps/SingleBattleColosseum/scripts.inc"
 	.include "data/maps/TradeCenter/scripts.inc"
 	.include "data/maps/RecordCorner/scripts.inc"
 	.include "data/maps/BattleColosseum_4P/scripts.inc"
