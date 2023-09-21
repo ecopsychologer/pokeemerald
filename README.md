@@ -1,6 +1,6 @@
 # Pokémon Emerald
 
-This is a decompilation of Pokémon Emerald.
+This is a decompilation of Pokémon Emerald. This branch will maximize your party's IV's when you heal your pokemon.
 
 It builds the following ROM:
 
