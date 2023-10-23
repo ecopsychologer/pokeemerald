@@ -909,6 +909,59 @@ LittlerootTown_EventScript_GiveRunningShoes::
 	delay 30
 	return
 
+LittlerootTown_EventScript_GiveCyndaquil::
+	lock
+	checkflag FLAG_RESCUED_BIRCH
+	goto_if_eq VAR_RESULT, FALSE, LittlerootTown_EventScript_NotReadyForPokemon
+	msgbox LittlerootTown_Text_GiveCindaquil, MSGBOX_DEFAULT
+	playfanfare MUS_OBTAIN_ITEM
+	givemon SPECIES_CYNDAQUIL, 5
+	goto_if_eq VAR_RESULT, MON_GIVEN_TO_PARTY, LittlerootTown_EventScript_SendCyndaquilToParty
+	goto_if_eq VAR_RESULT, MON_GIVEN_TO_PC, LittlerootTown_EventScript_SendCyndaquilToPC
+	release
+	goto Common_EventScript_NoMoreRoomForPokemon
+	end
+
+LittlerootTown_EventScript_NotReadyForPokemon::
+	msgbox LittlerootTown_Text_NotReadyForPokemon, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+
+LittlerootTown_EventScript_SendCyndaquilToParty::
+	setflag FLAG_CYNDAQUIL_RECEIVED
+	msgbox gText_NicknameThisPokemon, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, LittlerootTown_EventScript_CyndaquilReceived
+	call Common_EventScript_GetGiftMonPartySlot
+	call Common_EventScript_NameReceivedPartyMon
+	goto LittlerootTown_EventScript_CyndaquilReceived
+	end
+
+LittlerootTown_EventScript_SendCyndaquilToPC::
+	setflag FLAG_CYNDAQUIL_RECEIVED
+	msgbox gText_NicknameThisPokemon, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, LittlerootTown_EventScript_CyndaquilReceived
+	call Common_EventScript_NameReceivedBoxMon
+	goto LittlerootTown_EventScript_CyndaquilReceived
+	end
+
+LittlerootTown_EventScript_CyndaquilReceived::
+	lock
+	msgbox LittlerootTown_Text_CyndaquilReceived, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+
+LittlerootTown_Text_GiveCindaquil:
+	.string "You found a CYNDAQUIL!\p"
+
+LittlerootTown_Text_NotReadyForPokemon:
+	.string "You found a POKéMON!\p"
+	.string "Better not touch it yet...\p"
+
+LittlerootTown_Text_CyndaquilReceived:
+	.string "You received a CYNDAQUIL!\p"
+
 LittlerootTown_Text_OurNewHomeLetsGoInside:
 	.string "MOM: {PLAYER}, we're here, honey!\p"
 	.string "It must be tiring riding with our things\n"
