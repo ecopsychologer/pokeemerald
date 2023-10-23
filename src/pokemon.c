@@ -2302,6 +2302,91 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     GiveBoxMonInitialMoveset(boxMon);
 }
 
+u8 GenerateCurvedRandomLevel(s32 partySlot, u8 curveAmount) {
+    s32 slot, j;
+    u8 i, curvedLVL, temp;
+    u8 levels[gPlayerPartyCount];
+    u8 topLevels[4];
+    u8 numTopLevels = 0;
+    u8 totalWeight = 0;
+    u16 totalLevel = 0;
+
+
+    if (( (void *) partySlot) == NULL) {
+        slot = 1;
+    } else {
+        slot = partySlot + 1;
+    }
+    for (i = 0; i < gPlayerPartyCount; i++) {
+        levels[i] = gPlayerParty[i].level;
+    }
+
+    // bubble sort, since the party count is usually small
+    for (i = 0; i < gPlayerPartyCount - 1; i++) {
+        for (j = 0; j < gPlayerPartyCount - i - 1; j++) {
+            if (levels[j] > levels[j+1]) {
+                temp = levels[j];
+                levels[j] = levels[j+1];
+                levels[j+1] = temp;
+            }
+        }
+    }
+
+    // Calculate the average level of the top 4 Pokemon in the party.
+
+    for (j = gPlayerPartyCount - 1; j >= 0 && numTopLevels < 4; j--) {
+        topLevels[numTopLevels++] = levels[j];
+    }
+    if (numTopLevels >= 2) {
+        totalLevel += topLevels[0] * 4;
+        totalLevel += topLevels[1] * 4;
+        totalWeight += 8;
+    }
+    if (numTopLevels >= 3) {
+        totalLevel += topLevels[2] * 2;
+        totalWeight += 2;
+    }
+    if (numTopLevels >= 4) {
+        totalLevel += topLevels[3];
+        totalWeight += 1;
+    }
+    if (totalWeight != 0) {
+        curvedLVL = totalLevel / totalWeight;
+    } else {
+        curvedLVL = gPlayerParty[0].level;
+    }
+    switch(curveAmount) {
+        case 0: // default
+            curvedLVL = curvedLVL + 2*(slot/2) + (Random() % 5) - (Random() % 2); 
+            break;
+        case 1: // 2nd hardest
+            curvedLVL = curvedLVL + 3 + slot + (Random() % 3); 
+            break;
+        case 2: // hardest
+            curvedLVL = curvedLVL + 3 + 2*slot + (Random() % 6); 
+            break;
+        case 3: // easiest
+            curvedLVL = curvedLVL - 2 - slot + (Random() % 3);  
+            break;
+        case 4: // 2nd easiest 
+            curvedLVL = curvedLVL - 1 - slot/2; 
+            break;
+        default: 
+            curvedLVL = curvedLVL + 2*(slot/2) + (Random() % 4);  
+            break;
+    }
+
+    if (curvedLVL < 1) {
+        curvedLVL = 1;
+    } else if (curvedLVL > 100) {
+        curvedLVL = 100;
+    } else if ((curvedLVL - levels[0]) >= 3 && (levels[0] <= 10)) { // basically for starting out
+        curvedLVL = levels[0] - (Random() % 3) + 1 + (Random() % 2);
+    }
+
+    return curvedLVL;
+}
+
 void CreateMonWithNature(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 nature)
 {
     u32 personality;
