@@ -1,10 +1,18 @@
-# Pokémon Emerald
+# Pokémon Emerald+
 
-This is a decompilation of Pokémon Emerald. This branch will maximize your party's IV's when you heal your pokemon.
+This is a fork of the [decompilation](https://github.com/pret/pokeemerald) at [PRET](https://github.com/pret).
 
-It builds the following ROM:
+## Changes
+* Max IV's upon healing
+* Heal from the start menu
+* 
 
-* [**pokeemerald.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=1961) `sha1: f3ae088181bf583e55daf962a92bb46f4f1d07b7`
+merged [followers branch](https://github.com/aarant/pokeemerald/tree/followers):
+* [HGSS-style pokémon followers](https://bulbapedia.bulbagarden.net/wiki/Walking_Pok%C3%A9mon#Pok.C3.A9mon_HeartGold_and_SoulSilver) for all 386 pokémon, including emotes, the 28 Unown forms and a majority of follower messages.
+* Dynamic overworld palettes & reflections compatible with vanilla berry trees.
+* PID (but not legitimacy) preserving Pokémon nature-changing function
+* Function to detect modern emulators/GBA hardware.
+
 
 To set up the repository, see [INSTALL.md](INSTALL.md).
 
