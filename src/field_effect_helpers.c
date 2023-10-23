@@ -259,6 +259,8 @@ extern const struct SpriteTemplate *const gFieldEffectObjectTemplatePointers[];
 
 u8 CreateWarpArrowSprite(void)
 {
+    struct Sprite *sprite;
+
     u8 spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_ARROW], 0, 0, 82);
     if (spriteId != MAX_SPRITES)
     {
@@ -729,7 +731,7 @@ u32 FldEff_TracksSpot(void)
 	return 0;
 }
 
-u32 FldEff_TracksBug(void)
+u32 FldEff_BikeTireTracks(void)
 {
     u8 spriteId;
     struct Sprite *sprite;
@@ -1158,6 +1160,9 @@ static void UpdateAshFieldEffect_End(struct Sprite *sprite)
 #define sIntervalIdx  data[5]
 #define sPrevX        data[6]
 #define sPrevY        data[7]
+#define tBitfield     data[0]
+#define tPlayerOffset data[1]
+#define tPlayerObjId  data[2]
 
 u32 FldEff_SurfBlob(void)
 {
@@ -1492,6 +1497,7 @@ u32 ShowSandDisguiseFieldEffect(void)
 static u32 ShowDisguiseFieldEffect(u8 fldEff, u8 fldEffObj, u8 paletteNum)
 {
     u8 spriteId;
+    struct Sprite *sprite;
 
     if (TryGetObjectEventIdByLocalIdAndMap(gFieldEffectArguments[0], gFieldEffectArguments[1], gFieldEffectArguments[2], &spriteId))
     {
