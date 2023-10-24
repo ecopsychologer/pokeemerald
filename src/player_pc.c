@@ -234,7 +234,7 @@ static const u16 sNewGamePCItems[][2] =
     { ITEM_POKE_BALL, 999},
     { ITEM_AMULET_COIN, 20},
     { ITEM_LEFTOVERS, 20},
-    ( ITEM_LUCKY_EGG, 20},
+    { ITEM_LUCKY_EGG, 20},
     { ITEM_NONE, 0 }
 };
 
