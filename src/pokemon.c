@@ -6390,6 +6390,32 @@ bool8 TryIncrementMonLevel(struct Pokemon *mon)
     }
 }
 
+u8 CanMonLearnMove(struct Pokemon *mon, u8 move) {
+    u16 species = GetMonData(mon, MON_DATA_SPECIES_OR_EGG, 0);
+    u8 i;
+    u16 combinedValue;
+    u16 moveFromLearnset;
+    const u16 *learnset;
+
+    if (species == SPECIES_EGG) {
+        return 0;
+    }
+    
+    learnset = gLevelUpLearnsets[species];
+    for (i = 0; i < MAX_LEVEL_UP_MOVES; i++) {
+        combinedValue = learnset[i];
+        moveFromLearnset = combinedValue & 0x01FF; // Extract the move part
+        if (moveFromLearnset == move) {
+            return 1;
+        }
+        if (combinedValue == LEVEL_UP_END) {
+            break;
+        }
+    }
+    return 0;
+}
+
+
 u32 CanMonLearnTMHM(struct Pokemon *mon, u8 tm)
 {
     u16 species = GetMonData(mon, MON_DATA_SPECIES_OR_EGG, 0);
