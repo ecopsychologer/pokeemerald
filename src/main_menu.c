@@ -698,7 +698,7 @@ static void Task_WaitForSaveFileErrorWindow(u8 taskId)
     {
         ClearWindowTilemap(7);
         ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[7]);
-        gTasks[taskId].func = Task_MainMenuCheckBattery;
+        gTasks[taskId].func = Task_DisplayMainMenu;
     }
 }
 
