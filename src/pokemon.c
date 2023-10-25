@@ -2363,16 +2363,16 @@ u8 GenerateCurvedRandomLevel(s32 partySlot, u8 curveAmount) {
         topLevels[numTopLevels++] = levels[j];
     }
     if (numTopLevels >= 2) {
-        totalLevel += topLevels[gPlayerPartyCount-1] * 3;
-        totalLevel += topLevels[gPlayerPartyCount-2] * 4;
+        totalLevel += topLevels[0] * 3;
+        totalLevel += topLevels[1] * 4;
         totalWeight += 7;
     }
     if (numTopLevels >= 3) {
-        totalLevel += topLevels[gPlayerPartyCount-3] * 2;
+        totalLevel += topLevels[2] * 2;
         totalWeight += 2;
     }
     if (numTopLevels >= 4) {
-        totalLevel += topLevels[gPlayerPartyCount-4];
+        totalLevel += topLevels[3];
         totalWeight += 1;
     }
     if (totalWeight != 0) {
