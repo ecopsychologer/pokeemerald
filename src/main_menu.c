@@ -720,8 +720,8 @@ static void Task_MainMenuCheckBattery(u8 taskId)
         }
         else
         {
-            CreateMainMenuErrorWindow(gText_BatteryRunDry);
-            gTasks[taskId].func = Task_WaitForBatteryDryErrorWindow;
+            //CreateMainMenuErrorWindow(gText_BatteryRunDry);
+            gTasks[taskId].func = Task_DisplayMainMenu;
         }
     }
 }
