@@ -333,7 +333,7 @@ static void Task_HandleCancelParticipationYesNoInput(u8);
 static bool8 CanLearnTutorMove(u16, u8);
 static u16 GetTutorMove(u8);
 static bool8 ShouldUseChooseMonText(void);
-static bool8 HasAssociatedItem(u8 moveIndex);
+static bool8 HasAssociatedItem(u8);
 static void SetPartyMonFieldSelectionActions(struct Pokemon *, u8);
 static u8 GetPartyMenuActionsTypeInBattle(struct Pokemon *);
 static u8 GetPartySlotEntryStatus(s8);
@@ -2614,7 +2614,14 @@ static bool8 HasAssociatedItem(u8 moveIndex) {
         case 5: return CheckBagHasItem(ITEM_HM02, 1);
         case 6: return FALSE; //CheckBagHasItem(ITEM_HM08, 1);
         case 7: return FALSE; //CheckBagHasItem(ITEM_HM07, 1);
-        case 9: return CheckBagHasItem(ITEM_TM28, 1);
+        case 8: return TRUE;
+        case 9: return TRUE;
+        case 10: return TRUE;
+        case 11: return TRUE;
+        case 12: return TRUE;
+        case 13: return TRUE;
+        case 14: return TRUE;
+        //case 9: return CheckBagHasItem(ITEM_TM28, 1) || CanMonLearnMove(&mons[slotId], sFieldMoves[moveIndex]);
         default: return TRUE;  // For moves which don't need a bag check.
     }
 }
@@ -2628,12 +2635,11 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId) {
     // Add field moves to action list
     for (i = 0; i < MAX_MON_MOVES; i++) {
         for (j = 0; sFieldMoves[j] != FIELD_MOVES_COUNT; j++) {
-            if (GetMonData(&mons[slotId], i + MON_DATA_MOVE1) == sFieldMoves[j] ||
-               (CanMonLearnMove(&mons[slotId], sFieldMoves[j]) && HasAssociatedItem(j))) {
+            if (GetMonData(&mons[slotId], i + MON_DATA_MOVE1) == sFieldMoves[j] || (CanMonLearnMove(&mons[slotId], sFieldMoves[j]) && HasAssociatedItem(j)))
+            {
                 if (sPartyMenuInternal->numActions >= 5)
                     break;
                 AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, j + MENU_FIELD_MOVES);
-                break;
             }
         }
     }
