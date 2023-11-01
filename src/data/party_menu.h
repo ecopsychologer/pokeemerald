@@ -744,16 +744,16 @@ static const u8 sPartyMenuActionCounts[] =
 
 static const u16 sFieldMoves[FIELD_MOVES_COUNT + 1] =
 {
-    [FIELD_MOVE_CUT]          = MOVE_CUT,
-    [FIELD_MOVE_FLASH]        = MOVE_FLASH,
-    [FIELD_MOVE_ROCK_SMASH]   = MOVE_ROCK_SMASH,
-    [FIELD_MOVE_STRENGTH]     = MOVE_STRENGTH,
-    [FIELD_MOVE_SURF]         = MOVE_SURF,
-    [FIELD_MOVE_FLY]          = MOVE_FLY,
-    [FIELD_MOVE_DIVE]         = MOVE_DIVE,
-    [FIELD_MOVE_WATERFALL]    = MOVE_WATERFALL,
+    [FIELD_MOVE_CUT]          = MOVE_CUT, // 1
+    [FIELD_MOVE_FLASH]        = MOVE_FLASH, // 5
+    [FIELD_MOVE_ROCK_SMASH]   = MOVE_ROCK_SMASH, // hm 6
+    [FIELD_MOVE_STRENGTH]     = MOVE_STRENGTH, // hm 4
+    [FIELD_MOVE_SURF]         = MOVE_SURF, // hm 3
+    [FIELD_MOVE_FLY]          = MOVE_FLY, // 2
+    [FIELD_MOVE_DIVE]         = MOVE_DIVE, // hm 8
+    [FIELD_MOVE_WATERFALL]    = MOVE_WATERFALL, // hm 7
     [FIELD_MOVE_TELEPORT]     = MOVE_TELEPORT,
-    [FIELD_MOVE_DIG]          = MOVE_DIG,
+    [FIELD_MOVE_DIG]          = MOVE_DIG, // tm 28
     [FIELD_MOVE_SECRET_POWER] = MOVE_SECRET_POWER,
     [FIELD_MOVE_MILK_DRINK]   = MOVE_MILK_DRINK,
     [FIELD_MOVE_SOFT_BOILED]  = MOVE_SOFT_BOILED,

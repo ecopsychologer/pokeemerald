@@ -2616,20 +2616,16 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
     {
         for (j = 0; sFieldMoves[j] != FIELD_MOVES_COUNT; j++)
         {
-            if (GetMonData(&mons[slotId], i + MON_DATA_MOVE1) == sFieldMoves[j])
+            if ((GetMonData(&mons[slotId], i + MON_DATA_MOVE1) == sFieldMoves[j]) || (CanMonLearnMove(&mons[slotId], sFieldMoves[j]) && ((j == 0 && CheckBagHasItem(ITEM_HM01, 1)) || (j == 1 && CheckBagHasItem(ITEM_HM05, 1)) || (j == 2 && CheckBagHasItem(ITEM_HM06, 1)) || (j == 3 && CheckBagHasItem(ITEM_HM03, 1)) || (j == 4 && CheckBagHasItem(ITEM_HM03, 1)) || (j == 5 && CheckBagHasItem(ITEM_HM02, 1)) || (j == 6 && CheckBagHasItem(ITEM_HM08, 1)) || (j == 7 && CheckBagHasItem(ITEM_HM07, 1)) || (j == 9 && CheckBagHasItem(ITEM_TM_28, 1))) || !(0 <= j <= 7 && j != 9)))
             {
-                // If Mon already knows FLY and the HM is in the bag, prevent it from being added to action list
-                if (sFieldMoves[j] != MOVE_FLY || !CheckBagHasItem(ITEM_HM02, 1)){
-                    // If Mon already knows FLASH and the HM is in the bag, prevent it from being added to action list
-                    if (sFieldMoves[j] != MOVE_FLASH || !CheckBagHasItem(ITEM_HM05, 1)){ 
-                        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, j + MENU_FIELD_MOVES);
-                    }
-                }
+                if (sPartyMenuInternal->numActions >= 5)
+                    break;
+                AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, j + MENU_FIELD_MOVES);
                 break;
             }
         }
     }
-
+/*
     // If Mon can learn HM02 and action list consists of < 4 moves, add FLY to action list
     if (sPartyMenuInternal->numActions < 5 && CanMonLearnTMHM(&mons[slotId], ITEM_HM02 - ITEM_TM01) && CheckBagHasItem(ITEM_HM02, 1)) 
         AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 5 + MENU_FIELD_MOVES);
@@ -2642,11 +2638,13 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
     // If Mon can learn teleport and action list consists of < 4 moves, add teleport to action list
     if (sPartyMenuInternal->numActions < 5 && CanMonLearnMove(&mons[slotId], MOVE_TELEPORT)) 
         AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, FIELD_MOVE_TELEPORT + MENU_FIELD_MOVES);
-    // yada yada
+    // if mon can learn sweet scent append it
     if (sPartyMenuInternal->numActions < 5 && CanMonLearnMove(&mons[slotId], MOVE_SWEET_SCENT)) 
         AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, FIELD_MOVE_SWEET_SCENT + MENU_FIELD_MOVES);
+    // if mon can learn milk drink append it
     if (sPartyMenuInternal->numActions < 5 && CanMonLearnMove(&mons[slotId], MOVE_MILK_DRINK)) 
-        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, FIELD_MOVE_MILK_DRINK + MENU_FIELD_MOVES);
+        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, FIELD_MOVE_MILK_DRINK + MENU_FIELD_MOVES); */
+    // if mon is not in battle pike
     if (!InBattlePike())
     {
         if (GetMonData(&mons[1], MON_DATA_SPECIES) != SPECIES_NONE)
