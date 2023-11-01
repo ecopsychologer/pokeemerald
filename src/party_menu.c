@@ -334,6 +334,7 @@ static void Task_HandleCancelParticipationYesNoInput(u8);
 static bool8 CanLearnTutorMove(u16, u8);
 static u16 GetTutorMove(u8);
 static bool8 ShouldUseChooseMonText(void);
+static bool8 HasAssociatedItem(u8 moveIndex);
 static void SetPartyMonFieldSelectionActions(struct Pokemon *, u8);
 static u8 GetPartyMenuActionsTypeInBattle(struct Pokemon *);
 static u8 GetPartySlotEntryStatus(s8);
@@ -2604,50 +2605,41 @@ static void SetPartyMonSelectionActions(struct Pokemon *mons, u8 slotId, u8 acti
             sPartyMenuInternal->actions[i] = sPartyMenuActions[action][i];
     }
 }
+static bool8 HasAssociatedItem(u8 moveIndex) {
+    switch(moveIndex) {
+        case 0: return FALSE; //CheckBagHasItem(ITEM_HM01, 1);
+        case 1: return CheckBagHasItem(ITEM_HM05, 1);
+        case 2: return FALSE; //CheckBagHasItem(ITEM_HM06, 1);
+        case 3: return CheckBagHasItem(ITEM_HM04, 1);
+        case 4: return FALSE; //CheckBagHasItem(ITEM_HM03, 1);
+        case 5: return CheckBagHasItem(ITEM_HM02, 1);
+        case 6: return FALSE; //CheckBagHasItem(ITEM_HM08, 1);
+        case 7: return FALSE; //CheckBagHasItem(ITEM_HM07, 1);
+        case 9: return CheckBagHasItem(ITEM_TM28, 1);
+        default: return TRUE;  // For moves which don't need a bag check.
+    }
+}
 
-static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
-{
+static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId) {
     u8 i, j;
 
     sPartyMenuInternal->numActions = 0;
     AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_SUMMARY);
 
     // Add field moves to action list
-    for (i = 0; i < MAX_MON_MOVES; i++)
-    {
-        for (j = 0; sFieldMoves[j] != FIELD_MOVES_COUNT; j++)
-        {
-            if (GetMonData(&mons[slotId], i + MON_DATA_MOVE1) == sFieldMoves[j])
-            {
-                // If Mon already knows FLY and the HM is in the bag, prevent it from being added to action list
-                if (sFieldMoves[j] != MOVE_FLY || !CheckBagHasItem(ITEM_HM02, 1)){
-                    // If Mon already knows FLASH and the HM is in the bag, prevent it from being added to action list
-                    if (sFieldMoves[j] != MOVE_FLASH || !CheckBagHasItem(ITEM_HM05, 1)){ 
-                        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, j + MENU_FIELD_MOVES);
-                    }
-                }
+    for (i = 0; i < MAX_MON_MOVES; i++) {
+        for (j = 0; sFieldMoves[j] != FIELD_MOVES_COUNT; j++) {
+            if (GetMonData(&mons[slotId], i + MON_DATA_MOVE1) == sFieldMoves[j] ||
+               (CanMonLearnMove(&mons[slotId], sFieldMoves[j]) && HasAssociatedItem(j))) {
+                if (sPartyMenuInternal->numActions >= 5)
+                    break;
+                AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, j + MENU_FIELD_MOVES);
                 break;
             }
         }
     }
 
-    // If Mon can learn HM02 and action list consists of < 4 moves, add FLY to action list
-    if (sPartyMenuInternal->numActions < 5 && CanMonLearnTMHM(&mons[slotId], ITEM_HM02 - ITEM_TM01) && CheckBagHasItem(ITEM_HM02, 1)) 
-        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 5 + MENU_FIELD_MOVES);
-    // If Mon can learn HM05 and action list consists of < 4 moves, add FLASH to action list
-    if (sPartyMenuInternal->numActions < 5 && CanMonLearnTMHM(&mons[slotId], ITEM_HM05 - ITEM_TM01) && CheckBagHasItem(ITEM_HM05, 1)) 
-        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 1 + MENU_FIELD_MOVES);
-    // if mon can learn dig append it
-    if (sPartyMenuInternal->numActions < 5 && CanMonLearnTMHM(&mons[slotId], ITEM_TM28 - ITEM_TM01)) 
-        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, FIELD_MOVE_DIG + MENU_FIELD_MOVES);
-    // If Mon can learn teleport and action list consists of < 4 moves, add teleport to action list
-    if (sPartyMenuInternal->numActions < 5 && CanMonLearnMove(&mons[slotId], MOVE_TELEPORT)) 
-        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, FIELD_MOVE_TELEPORT + MENU_FIELD_MOVES);
-    // yada yada
-    if (sPartyMenuInternal->numActions < 5 && CanMonLearnMove(&mons[slotId], MOVE_SWEET_SCENT)) 
-        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, FIELD_MOVE_SWEET_SCENT + MENU_FIELD_MOVES);
-    if (sPartyMenuInternal->numActions < 5 && CanMonLearnMove(&mons[slotId], MOVE_MILK_DRINK)) 
-        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, FIELD_MOVE_MILK_DRINK + MENU_FIELD_MOVES);
+    // if mon is not in battle pike
     if (!InBattlePike())
     {
         if (GetMonData(&mons[1], MON_DATA_SPECIES) != SPECIES_NONE)
