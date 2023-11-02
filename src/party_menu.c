@@ -2621,7 +2621,6 @@ static bool8 HasAssociatedItem(u8 moveIndex) {
         case 12: return TRUE;
         case 13: return TRUE;
         case 14: return TRUE;
-        //case 9: return CheckBagHasItem(ITEM_TM28, 1) || CanMonLearnMove(&mons[slotId], sFieldMoves[moveIndex]);
         default: return TRUE;  // For moves which don't need a bag check.
     }
 }
@@ -2637,7 +2636,7 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId) {
         for (j = 0; sFieldMoves[j] != FIELD_MOVES_COUNT; j++) {
             if (GetMonData(&mons[slotId], i + MON_DATA_MOVE1) == sFieldMoves[j] || (CanMonLearnMove(&mons[slotId], sFieldMoves[j]) && HasAssociatedItem(j)))
             {
-                if (sPartyMenuInternal->numActions >= 5)
+                if (sPartyMenuInternal->numActions > 5)
                     break;
                 AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, j + MENU_FIELD_MOVES);
             }
