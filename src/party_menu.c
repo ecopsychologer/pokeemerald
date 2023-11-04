@@ -2637,7 +2637,7 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId) {
     // Add field moves to action list
     for (j = 0; sFieldMoves[j] != FIELD_MOVES_COUNT; j++) {
         if (PokemonKnowsMove(&mons[slotId], sFieldMoves[j]) || CanMonLearnMove(&mons[slotId], sFieldMoves[j])) {
-            if (sPartyMenuInternal->numActions > 5)
+            if (sPartyMenuInternal->numActions >= 5)
                 break;
             if (!ActionListContainsMove(j + MENU_FIELD_MOVES)) {
                 AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, j + MENU_FIELD_MOVES);
