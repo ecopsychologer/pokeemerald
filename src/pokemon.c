@@ -6425,7 +6425,6 @@ bool8 CanMonLearnMove(struct Pokemon *mon, u16 move) {
     return FALSE;
 }
 
-// You'll need to implement this function or use a lookup table to get the TM/HM number for a given move.
 u16 GetTMHMNumberFromMove(u16 move) {
     switch (move) {
         case MOVE_CUT:
