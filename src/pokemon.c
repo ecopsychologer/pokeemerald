@@ -6200,29 +6200,69 @@ bool8 TryIncrementMonLevel(struct Pokemon *mon)
     }
 }
 
-u8 CanMonLearnMove(struct Pokemon *mon, u8 move) {
-    u16 species = GetMonData(mon, MON_DATA_SPECIES_OR_EGG, 0);
+bool8 CanMonLearnMove(struct Pokemon *mon, u16 move) {
+    u16 species = GetMonData(mon, MON_DATA_SPECIES_OR_EGG, NULL);
     u8 i;
     u16 combinedValue;
     u16 moveFromLearnset;
     const u16 *learnset;
 
     if (species == SPECIES_EGG) {
-        return 0;
+        return FALSE;
     }
     
+    // Check if Pokémon can learn the move by leveling up.
     learnset = gLevelUpLearnsets[species];
     for (i = 0; i < MAX_LEVEL_UP_MOVES; i++) {
         combinedValue = learnset[i];
         moveFromLearnset = combinedValue & 0x01FF; // Extract the move part
         if (moveFromLearnset == move) {
-            return 1;
+            return TRUE;
         }
         if (combinedValue == LEVEL_UP_END) {
             break;
         }
     }
-    return 0;
+
+    // Check if Pokémon can learn the move through TM/HM.
+    // You need a function or lookup to get the TM/HM number from the move number.
+    species = GetTMHMNumberFromMove(move); // reuse the variable
+    i = species - ITEM_TM01; // reuse this variable to shrink u16 to u8
+    if (species != 0xFF && CanMonLearnTMHM(mon, i)) {
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+// You'll need to implement this function or use a lookup table to get the TM/HM number for a given move.
+u16 GetTMHMNumberFromMove(u16 move) {
+    switch (move) {
+        case MOVE_CUT:
+            return ITEM_HM01;
+        case MOVE_FLY:
+            return ITEM_HM02;
+        case MOVE_SURF:
+            return ITEM_HM03;
+        case MOVE_STRENGTH:
+            return ITEM_HM04;
+        case MOVE_FLASH:
+            return ITEM_HM05;
+        case MOVE_DIG:
+            return ITEM_TM28;
+        case MOVE_SOFT_BOILED:
+            return ITEM_TM41;  // Note: Also taught by move tutor and leveling up.
+        case MOVE_WATERFALL:
+            return ITEM_HM07;  
+        case MOVE_ROCK_SMASH:
+            return ITEM_HM06;  // Note: This move was TM08 in Gen II but is HM06 in Gen III.
+        case MOVE_DIVE:
+            return ITEM_HM08;
+        case MOVE_SECRET_POWER:
+            return ITEM_TM43;
+        default:
+            return 0xFF;  // This move is not a TM/HM or is not listed.
+    }
 }
 
 
