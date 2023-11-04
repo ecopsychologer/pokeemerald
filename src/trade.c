@@ -4621,7 +4621,10 @@ u16 GetTradeSpecies(void)
 
 void CreateInGameTradePokemon(void)
 {
-    CreateInGameTradePokemonInternal(gSpecialVar_0x8005, gSpecialVar_0x8004);
+    if(gSpecialVar_0x8004 == 6)  // a value greater than return value range of 0-5 and not 255
+        gEnemyParty[0] = gPlayerParty[gSpecialVar_0x8005];
+    else
+        CreateInGameTradePokemonInternal(gSpecialVar_0x8005, gSpecialVar_0x8004);
 }
 
 static void CB2_UpdateLinkTrade(void)
