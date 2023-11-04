@@ -336,6 +336,8 @@ static u16 GetTutorMove(u8);
 static bool8 ShouldUseChooseMonText(void);
 static bool8 HasAssociatedItem(u8);
 static void SetPartyMonFieldSelectionActions(struct Pokemon *, u8);
+static bool8 PokemonKnowsMove(struct Pokemon *, u16);
+static bool8 ActionListContainsMove(u8);
 static u8 GetPartyMenuActionsTypeInBattle(struct Pokemon *);
 static u8 GetPartySlotEntryStatus(s8);
 static void Task_UpdateHeldItemSprite(u8);
@@ -2607,7 +2609,7 @@ static void SetPartyMonSelectionActions(struct Pokemon *mons, u8 slotId, u8 acti
 }
 static bool8 HasAssociatedItem(u8 moveIndex) {
     switch(moveIndex) {
-        case 0: return FALSE; //CheckBagHasItem(ITEM_HM01, 1);
+        case 0: return TRUE; //CheckBagHasItem(ITEM_HM01, 1);
         case 1: return CheckBagHasItem(ITEM_HM05, 1);
         case 2: return FALSE; //CheckBagHasItem(ITEM_HM06, 1);
         case 3: return CheckBagHasItem(ITEM_HM04, 1);
@@ -2622,7 +2624,6 @@ static bool8 HasAssociatedItem(u8 moveIndex) {
         case 12: return TRUE;
         case 13: return TRUE;
         case 14: return TRUE;
-        //case 9: return CheckBagHasItem(ITEM_TM28, 1) || CanMonLearnMove(&mons[slotId], sFieldMoves[moveIndex]);
         default: return TRUE;  // For moves which don't need a bag check.
     }
 }
@@ -2634,12 +2635,11 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId) {
     AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_SUMMARY);
 
     // Add field moves to action list
-    for (i = 0; i < MAX_MON_MOVES; i++) {
-        for (j = 0; sFieldMoves[j] != FIELD_MOVES_COUNT; j++) {
-            if (GetMonData(&mons[slotId], i + MON_DATA_MOVE1) == sFieldMoves[j] || (CanMonLearnMove(&mons[slotId], sFieldMoves[j]) && HasAssociatedItem(j)))
-            {
-                if (sPartyMenuInternal->numActions >= 5)
-                    break;
+    for (j = 0; sFieldMoves[j] != FIELD_MOVES_COUNT; j++) {
+        if (PokemonKnowsMove(&mons[slotId], sFieldMoves[j]) || CanMonLearnMove(&mons[slotId], sFieldMoves[j])) {
+            if (sPartyMenuInternal->numActions > 5)
+                break;
+            if (!ActionListContainsMove(j + MENU_FIELD_MOVES)) {
                 AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, j + MENU_FIELD_MOVES);
             }
         }
@@ -2656,6 +2656,28 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId) {
             AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_ITEM);
     }
     AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_CANCEL1);
+}
+
+// Check if the Pokemon knows a specific move
+static bool8 PokemonKnowsMove(struct Pokemon *mon, u16 move) {
+    u8 i;
+    for (i = 0; i < MAX_MON_MOVES; i++) {
+        if (GetMonData(mon, MON_DATA_MOVE1 + i) == move) {
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+// Check if a move is already in the action list
+static bool8 ActionListContainsMove(u8 moveAction) {
+    u8 i;
+    for (i = 0; i < sPartyMenuInternal->numActions; i++) {
+        if (sPartyMenuInternal->actions[i] == moveAction) {
+            return TRUE;
+        }
+    }
+    return FALSE;
 }
 
 static u8 GetPartyMenuActionsType(struct Pokemon *mon)
