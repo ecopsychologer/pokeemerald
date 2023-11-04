@@ -2380,8 +2380,8 @@ u8 GenerateCurvedRandomLevel(s32 partySlot, u8 curveAmount) {
         curvedLVL = 1;
     } else if (curvedLVL > 100) {
         curvedLVL = 100;
-    } else if ((curvedLVL - levels[0]) >= 3 && (levels[0] <= 10)) { // basically for starting out
-        curvedLVL = levels[0] - (Random() % 3) + 1 + (Random() % 2);
+    } else if ((curvedLVL - levels[gPlayerPartyCount-1]) >= 3 && (levels[gPlayerPartyCount-1] <= 10)) { // basically for starting out
+        curvedLVL = levels[gPlayerPartyCount-1] - (Random() % 3) + 1 + (Random() % 2);
     }
 
     return curvedLVL;
