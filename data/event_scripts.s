@@ -986,6 +986,10 @@ Common_EventScript_DirectCornerAttendant::
 	call CableClub_EventScript_DirectCornerAttendant
 	end
 
+Common_EventScript_SelfTrade::
+	call CableClub_EventScript_SelfTrade
+	end
+
 Common_EventScript_RemoveStaticPokemon::
 	fadescreenswapbuffers FADE_TO_BLACK
 	removeobject VAR_LAST_TALKED
