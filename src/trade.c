@@ -4621,9 +4621,11 @@ u16 GetTradeSpecies(void)
 
 void CreateInGameTradePokemon(void)
 {
-    if(gSpecialVar_0x8004 == 6)  // a value greater than return value range of 0-5 and not 255
-        //gEnemyParty[0] = gPlayerParty[gSpecialVar_0x8005];
-        Trade_Memcpy(&gEnemyParty[0], &gPlayerParty[gSpecialVar_0x8005], sizeof(struct Pokemon));
+    if(gSpecialVar_0x8004 == 6) {  // a value greater than return value range of 0-5 and not 255
+        gEnemyParty[0] = gPlayerParty[gSpecialVar_0x8005];
+        //Trade_Memcpy(&gEnemyParty[0], &gPlayerParty[gSpecialVar_0x8005], 2 * sizeof(struct Pokemon));
+        gSpecialVar_0x8004 = 0;
+    }
     else
         CreateInGameTradePokemonInternal(gSpecialVar_0x8005, gSpecialVar_0x8004);
 }
