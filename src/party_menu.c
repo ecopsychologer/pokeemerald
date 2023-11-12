@@ -228,7 +228,7 @@ static EWRAM_DATA u16 *sSlot1TilemapBuffer = 0; // for switching party slots
 static EWRAM_DATA u16 *sSlot2TilemapBuffer = 0; //
 EWRAM_DATA u8 gSelectedOrderFromParty[MAX_FRONTIER_PARTY_SIZE] = {0};
 static EWRAM_DATA u16 sPartyMenuItemId = 0;
-static EWRAM_DATA u16 sUnused = 0;
+static EWRAM_DATA u16 sFieldMoveFlags = 0; // flag to track field moves across the party's action menu
 EWRAM_DATA u8 gBattlePartyCurrentOrder[PARTY_SIZE / 2] = {0}; // bits 0-3 are the current pos of Slot 1, 4-7 are Slot 2, and so on
 
 // IWRAM common
@@ -2636,11 +2636,13 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId) {
 
     // Add field moves to action list
     for (j = 0; sFieldMoves[j] != FIELD_MOVES_COUNT; j++) {
-        if (PokemonKnowsMove(&mons[slotId], sFieldMoves[j]) || (CanMonLearnMove(&mons[slotId], sFieldMoves[j]) && !PartyMonKnowsMove(sFieldMoves[j]))) {
+        // here we check if the pokemon either knows the move or can learn it, and that no other pokemon in the party has the field move yet
+        if ((PokemonKnowsMove(&mons[slotId], sFieldMoves[j]) || CanMonLearnMove(&mons[slotId], sFieldMoves[j])) && !(sFieldMoveFlags & (1 << j))) {
             if (sPartyMenuInternal->numActions >= 5)
                 break;
             if (!ActionListContainsMove(j + MENU_FIELD_MOVES)) {
                 AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, j + MENU_FIELD_MOVES);
+                sFieldMoveFlags |= (1 << j); // set the field move flag bit
             }
         }
     }
