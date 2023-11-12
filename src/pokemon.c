@@ -6200,6 +6200,22 @@ bool8 TryIncrementMonLevel(struct Pokemon *mon)
     }
 }
 
+bool8 PartyMonKnowsMove(u16 move) {
+    u8 i, j;
+    for( i = 0; i < gPlayerPartyCount; i++) {
+        for (j = 0; j < MAX_MON_MOVES; j++)
+        {
+            u16 existingMove = GetBoxMonData(&gPlayerParty[i].box, MON_DATA_MOVE1 + j, NULL);
+            if (existingMove == MOVE_NONE)
+            {
+                break;
+            }
+            if (existingMove == move)
+                return TRUE;
+        }
+    }
+}
+
 bool8 CanMonLearnMove(struct Pokemon *mon, u16 move) {
     u16 species = GetMonData(mon, MON_DATA_SPECIES_OR_EGG, NULL);
     u8 i;
