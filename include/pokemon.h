@@ -500,7 +500,6 @@ u8 CheckPartyHasHadPokerus(struct Pokemon *party, u8 selection);
 void UpdatePartyPokerusTime(u16 days);
 void PartySpreadPokerus(struct Pokemon *party);
 bool8 TryIncrementMonLevel(struct Pokemon *mon);
-bool8 PartyMonKnowsMove(u16 move);
 bool8 CanMonLearnMove(struct Pokemon *mon, u16 move);
 u16 GetTMHMNumberFromMove(u16 move);
 u32 CanMonLearnTMHM(struct Pokemon *mon, u8 tm);
