@@ -990,6 +990,21 @@ Common_EventScript_SelfTrade::
 	call CableClub_EventScript_SelfTrade
 	end
 
+Common_EventScript_Return::
+	return
+
+Common_EventScript_End::
+	releaseall
+	end
+
+Common_EventScript_MoveRelearner::
+	call CableClub_EventScript_MoveRelearner
+	end
+
+Common_EventScript_MoveDeleter::
+	call CableClub_MoveDeleter
+	end
+
 Common_EventScript_RemoveStaticPokemon::
 	fadescreenswapbuffers FADE_TO_BLACK
 	removeobject VAR_LAST_TALKED

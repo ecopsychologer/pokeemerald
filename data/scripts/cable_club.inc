@@ -1457,3 +1457,165 @@ SCRIPT_SelfTrade_Text_YouDontWantToThatsOkay:
 	.string "You dont want to?\n"
         .string "Okay come back anytime$"
 
+CableClub_EventScript_MoveRelearner::
+	lockall
+	goto_if_set FLAG_TEMP_1, CableClub_EventScript_AskTeachMove
+	msgbox CableClub_Text_ImTheMoveTutor, MSGBOX_DEFAULT
+	setflag FLAG_TEMP_1
+	goto CableClub_EventScript_AskTeachMove
+	end
+
+CableClub_EventScript_AskTeachMove::
+	msgbox CableClub_Text_WantMeToTeachMove, MSGBOX_YESNO
+	switch VAR_RESULT
+	case NO, Common_EventScript_End
+	goto CableClub_EventScript_ChooseMon
+	end
+
+CableClub_EventScript_ChooseMon::
+	msgbox CableClub_Text_TutorWhichMon, MSGBOX_DEFAULT
+	special ChooseMonForMoveRelearner
+	waitstate
+	goto_if_eq VAR_0x8004, PARTY_NOTHING_CHOSEN, Common_EventScript_End
+	special IsSelectedMonEgg
+	goto_if_eq VAR_RESULT, TRUE, CableClub_EventScript_CantTeachEgg
+	goto_if_eq VAR_0x8005, 0, CableClub_EventScript_NoMoveToTeachMon
+	goto CableClub_EventScript_ChooseMove
+	end
+
+CableClub_EventScript_ChooseMove::
+	msgbox CableClub_Text_TeachWhichMove, MSGBOX_DEFAULT
+	special TeachMoveRelearnerMove
+	waitstate
+	goto_if_eq VAR_0x8004, 0, CableClub_EventScript_ChooseMon
+	releaseall
+	end
+
+CableClub_EventScript_NoMoveToTeachMon::
+	msgbox CableClub_Text_DontHaveMoveToTeachPokemon, MSGBOX_DEFAULT
+	goto CableClub_EventScript_ChooseMon
+	end
+
+CableClub_EventScript_CantTeachEgg::
+	msgbox CableClub_Text_CantTeachEgg, MSGBOX_DEFAULT
+	goto CableClub_EventScript_ChooseMon
+	end
+
+CableClub_Text_ImTheMoveTutor:
+	.string "I'm a Move Tutor.\p"
+	.string "I know all the moves that Pokémon\n"
+	.string "learn--every one of them--and I can\l"
+	.string "teach Pokémon those moves.\p"
+	.string "I can teach a move to a Pokémon\n"
+	.string "of yours if you'd like.$"
+
+CableClub_Text_TutorWhichMon:
+	.string "Which Pokémon needs tutoring?$"
+
+CableClub_Text_WantMeToTeachMove:
+	.string "Want me to tutor a Pokémon?$"
+
+CableClub_Text_TeachWhichMove:
+	.string "Which move should I teach?$"
+
+CableClub_Text_DontHaveMoveToTeachPokemon:
+	.string "Sorry…\p"
+	.string "It doesn't appear as if I have any move\n"
+	.string "I can teach that Pokémon.$"
+
+CableClub_Text_CantTeachEgg:
+	.string "Hunh? There isn't a single move that\n"
+	.string "I can teach an Egg.$"
+
+CableClub_MoveDeleter::
+	lockall
+	msgbox CableClub_Text_ICanMakeMonForgetMove, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, CableClub_ComeAgain
+	goto CableClub_ChooseMonAndMoveToForget
+	end
+
+CableClub_ChooseMonAndMoveToForget::
+	msgbox CableClub_Text_WhichMonShouldForget, MSGBOX_DEFAULT
+	special ChoosePartyMon
+	waitstate
+	goto_if_eq VAR_0x8004, PARTY_NOTHING_CHOSEN, CableClub_ComeAgain
+	special IsSelectedMonEgg
+	goto_if_eq VAR_RESULT, TRUE, CableClub_EggCantForgetMoves
+	special GetNumMovesSelectedMonHas
+	goto_if_eq VAR_RESULT, 1, CableClub_MonOnlyKnowsOneMove
+	msgbox CableClub_Text_WhichMoveShouldBeForgotten, MSGBOX_DEFAULT
+	fadescreen FADE_TO_BLACK
+	special MoveDeleterChooseMoveToForget
+	fadescreen FADE_FROM_BLACK
+	goto_if_eq VAR_0x8005, MAX_MON_MOVES, CableClub_ChooseMonAndMoveToForget
+	special BufferMoveDeleterNicknameAndMove
+	msgbox CableClub_Text_MonsMoveShouldBeForgotten, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, CableClub_ComeAgain
+	special IsLastMonThatKnowsSurf
+	goto_if_eq VAR_RESULT, TRUE, CableClub_LastMonWithSurf
+	special MoveDeleterForgetMove
+	playfanfare MUS_MOVE_DELETED
+	waitfanfare
+	msgbox CableClub_Text_MonHasForgottenMove, MSGBOX_DEFAULT
+	releaseall
+	end
+
+CableClub_MonOnlyKnowsOneMove::
+	special BufferMoveDeleterNicknameAndMove
+	msgbox CableClub_Text_MonOnlyKnowsOneMove, MSGBOX_DEFAULT
+	releaseall
+	end
+
+CableClub_EggCantForgetMoves::
+	msgbox CableClub_Text_EggCantForgetMoves, MSGBOX_DEFAULT
+	releaseall
+	end
+
+CableClub_ComeAgain::
+	msgbox CableClub_Text_ComeAgain, MSGBOX_DEFAULT
+	releaseall
+	end
+
+CableClub_LastMonWithSurf::
+	special BufferMoveDeleterNicknameAndMove
+	msgbox CableClub_Text_CantForgetSurf, MSGBOX_DEFAULT
+	releaseall
+	end
+
+CableClub_Text_ICanMakeMonForgetMove:
+	.string "Uh… Oh, yes!\n"
+	.string "I'm a pupil of the Move Deleter.\p"
+	.string "I can make Pokémon forget their moves.\p"
+	.string "Would you like me to do that?$"
+
+CableClub_Text_WhichMonShouldForget:
+	.string "Which Pokémon should forget a move?$"
+
+CableClub_Text_WhichMoveShouldBeForgotten:
+	.string "Which move should be forgotten?$"
+
+CableClub_Text_MonOnlyKnowsOneMove:
+	.string "{STR_VAR_1} knows only one move\n"
+	.string "so it can't be forgotten…$"
+
+CableClub_Text_MonsMoveShouldBeForgotten:
+	.string "Hm! {STR_VAR_1}'s {STR_VAR_2}?\n"
+	.string "That move should be forgotten?$"
+
+CableClub_Text_MonHasForgottenMove:
+	.string "It worked to perfection!\p"
+	.string "{STR_VAR_1} has forgotten\n"
+	.string "{STR_VAR_2} completely.$"
+
+CableClub_Text_ComeAgain:
+	.string "Come again if there are moves that\n"
+	.string "need to be forgotten.$"
+
+CableClub_Text_EggCantForgetMoves:
+	.string "What?\n"
+	.string "No Egg should know any moves.$"
+
+CableClub_Text_CantForgetSurf:
+	.string "Hm!\p"
+	.string "Your {STR_VAR_1} doesn't seem willing\n"
+	.string "to forget Surf.$"
